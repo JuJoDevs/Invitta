@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
             InvittaTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     TemporalScreen(
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
                     )
                 }
             }
@@ -32,17 +32,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TemporalScreen(
-    modifier: Modifier = Modifier
-) {
+fun TemporalScreen(modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
-            .fillMaxSize()
+        modifier =
+            modifier
+                .fillMaxSize(),
     ) {
         Text(
             text = "INVITTA",
-            modifier = modifier
+            modifier = modifier,
         )
     }
 }
@@ -53,7 +52,7 @@ fun GreetingPreview() {
     InvittaTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             TemporalScreen(
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
             )
         }
     }
