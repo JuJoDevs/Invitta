@@ -49,6 +49,9 @@ jobs:
       - name: Ktlint check
         run: ./gradlew ktlintCheck
 
+      - name: Detekt validation
+        run: ./gradlew detekt
+
       - name: Clean
         run: ./gradlew clean
 

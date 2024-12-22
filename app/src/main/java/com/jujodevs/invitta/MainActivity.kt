@@ -41,14 +41,13 @@ fun TemporalScreen(modifier: Modifier = Modifier) {
     ) {
         Text(
             text = "INVITTA",
-            modifier = modifier,
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+private fun GreetingPreview() {
     InvittaTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             TemporalScreen(
