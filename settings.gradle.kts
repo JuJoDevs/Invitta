@@ -1,6 +1,9 @@
 @file:Suppress("UnstableApiUsage")
 
+gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
+
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -24,3 +27,5 @@ dependencyResolutionManagement {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "Invitta"
 include(":app")
+include(":feature:home:api")
+include(":feature:home:impl")
