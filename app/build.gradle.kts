@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,6 +10,18 @@ android {
     namespace = "com.jujodevs.invitta"
     compileSdk = 35
 
+    signingConfigs {
+        create("release") {
+            val keystoreFile = project.rootProject.file("local.properties")
+            val properties = Properties()
+            properties.load(keystoreFile.inputStream())
+            storeFile = file(properties.getProperty("KEYSTORE_STORE_FILE"))
+            storePassword = properties.getProperty("KEYSTORE_STORE_PASSWORD")
+            keyAlias = properties.getProperty("KEYSTORE_KEY_ALIAS")
+            keyPassword = properties.getProperty("KEYSTORE_KEY_PASSWORD")
+        }
+    }
+
     defaultConfig {
         applicationId = "com.jujodevs.invitta"
         minSdk = 24
@@ -16,6 +30,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig = signingConfigs.getByName("release")
     }
 
     buildTypes {
