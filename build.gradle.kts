@@ -1,4 +1,7 @@
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+import java.nio.file.attribute.PosixFilePermissions
 
 plugins {
     alias(libs.plugins.android.application) apply false
@@ -11,7 +14,6 @@ plugins {
 subprojects {
     apply {
         plugin("org.jlleitschuh.gradle.ktlint")
-        plugin("io.gitlab.arturbosch.detekt")
     }
 
     ktlint {
@@ -24,9 +26,62 @@ subprojects {
             exclude("**/generated/**")
         }
     }
+}
+
+detekt {
+    val filesProp = project.findProperty("detektFiles") as String?
+    if (!filesProp.isNullOrBlank()) {
+        val fileList =
+            filesProp.split(",")
+                .filter { it.isNotBlank() }
+                .map { file(it) }
+        source.setFrom(fileList)
+    } else {
+        source.setFrom(files("src/main/kotlin"))
+    }
+}
+
+allprojects {
+    apply(plugin = "io.gitlab.arturbosch.detekt")
 
     dependencies {
         //noinspection UseTomlInstead
         detektPlugins("io.nlopez.compose.rules:detekt:0.4.22")
+    }
+}
+
+tasks.register("copyGitHooks") {
+    doLast {
+        val sourceDir = file("hooks")
+        val targetDir = file(".git/hooks")
+        sourceDir.listFiles()
+            ?.forEach { sourceFile ->
+                val targetFile = File(targetDir, sourceFile.name)
+                if (!targetFile.exists() ||
+                    Files.mismatch(sourceFile.toPath(), targetFile.toPath()) != -1L
+                ) {
+                    Files.copy(
+                        sourceFile.toPath(),
+                        targetFile.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING,
+                    )
+                    print("> Copied hook: ${sourceFile.name}")
+                }
+            }
+    }
+    doLast {
+        file(".git/hooks/").walk()
+            .forEach { file ->
+                if (file.isFile) {
+                    try {
+                        Files.setPosixFilePermissions(
+                            file.toPath(),
+                            PosixFilePermissions.fromString("rwxr-xr-x"),
+                        )
+                    } catch (_: UnsupportedOperationException) {
+                        logger.warn("Unable to set POSIX permissions on ${file.name}.")
+                    }
+                }
+            }
     }
 }

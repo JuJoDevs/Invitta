@@ -33,12 +33,12 @@ jobs:
 
       - name: Decode and set up keystore.jks
         run: |
-          echo "${{ secrets.KEYSTORE_STORE_FILE_BASE_64 }}" | base64 --decode > /home/runner/work/invitta/invitta/app/keystore.jks
+          echo "${{ secrets.KEYSTORE_STORE_FILE_BASE_64 }}" | base64 --decode > /home/runner/work/Invitta/Invitta/app/keystore.jks
 
       - name: Create local.properties
         run: |
           echo "sdk.dir=/usr/local/lib/android/sdk" > ./local.properties
-          echo "KEYSTORE_STORE_FILE=/home/runner/work/invitta/invitta/app/keystore.jks" >> ./local.properties
+          echo "KEYSTORE_STORE_FILE=/home/runner/work/Invitta/Invitta/app/keystore.jks" >> ./local.properties
           echo "KEYSTORE_KEY_ALIAS=${{ secrets.KEYSTORE_KEY_ALIAS }}" >> ./local.properties
           echo "KEYSTORE_STORE_PASSWORD=${{ secrets.KEYSTORE_STORE_PASSWORD }}" >> ./local.properties
           echo "KEYSTORE_KEY_PASSWORD=${{ secrets.KEYSTORE_KEY_PASSWORD }}" >> ./local.properties
