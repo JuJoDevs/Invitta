@@ -46,9 +46,21 @@ gradlePlugin {
             id = "com.jujodevs.invitta.convention.android.library.ui"
             implementationClass = "AndroidLibraryUiConventionPlugin"
         }
+        register("android-test") {
+            id = "com.jujodevs.invitta.convention.android.test"
+            implementationClass = "AndroidTestConventionPlugin"
+        }
         register("jvm-library") {
             id = "com.jujodevs.invitta.convention.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
+        }
+        register("jvm-test") {
+            id = "com.jujodevs.invitta.convention.jvm.test"
+            implementationClass = "JvmTestConventionPlugin"
+        }
+        register("paparazzi") {
+            id = "com.jujodevs.invitta.convention.paparazzi"
+            implementationClass = "PaparazziConventionPlugin"
         }
     }
 }

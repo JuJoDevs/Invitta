@@ -11,6 +11,7 @@ agp = "8.7.3"
 kotlin = "2.1.0"
 ksp = "2.1.0-1.0.29"
 coreKtx = "1.15.0"
+coroutines = "1.10.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.12.01"
@@ -22,12 +23,19 @@ ktlint = "12.1.2"
 detekt = "1.23.7"
 detekt-compose = "0.4.22"
 
+# Testing Versions
 junit = "4.13.2"
-junitVersion = "1.2.1"
+junit5 = "5.11.4"
+androidJunit = "1.2.1"
+compose-test = "1.7.6"
+hamcrest = "3.0"
 espressoCore = "3.6.1"
-jetbrainsKotlinJvm = "2.1.0"
-appcompat = "1.7.0"
-material = "1.12.0"
+kluent = "1.73"
+kotest = "5.9.1"
+mockk = "1.13.14"
+turbine = "1.2.0"
+robolectric = "4.14.1"
+paparazzi = "1.3.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,6 +51,8 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
@@ -50,17 +60,36 @@ koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compos
 napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
 detetkcompose = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "detekt-compose" }
 
+# Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+hamcrest = { group = "org.hamcrest", name = "hamcrest", version.ref = "hamcrest" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidJunit" }
+androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose-test" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
+
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit5" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit5" }
+junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit5" }
+junit-jupiter-vintage-engine = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junit5" }
+
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
+koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin" }
+koin-test-junit5 = { group = "io.insert-koin", name = "koin-test-junit5", version.ref = "koin" }
+
+kluent = { group = "org.amshove.kluent", name = "kluent", version.ref = "kluent" }
+kotest = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 # Build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [bundles]
 compose = [
@@ -85,8 +114,9 @@ koin-compose = ["koin-core", "koin-android", "koin-androidx-compose"]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
@@ -98,3 +128,6 @@ convention-android-library = { id = "com.jujodevs.invitta.convention.android.lib
 convention-android-library-compose = { id = "com.jujodevs.invitta.convention.android.library.compose" }
 convention-android-library-ui = { id = "com.jujodevs.invitta.convention.android.library.ui" }
 convention-jvm-library = { id = "com.jujodevs.invitta.convention.jvm.library" }
+convention-android-test = { id = "com.jujodevs.invitta.convention.android.test" }
+convention-jvm-test = { id = "com.jujodevs.invitta.convention.jvm.test" }
+convention-paparazzi = { id = "com.jujodevs.invitta.convention.paparazzi" }

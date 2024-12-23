@@ -2,6 +2,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.convention.application.compose)
+    alias(libs.plugins.convention.android.test)
 }
 
 android {
@@ -22,12 +23,6 @@ android {
     defaultConfig {
         signingConfig = signingConfigs.getByName("release")
     }
-}
-
-dependencies {
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }
 
 tasks.named("preBuild")

@@ -27,5 +27,6 @@ dependencyResolutionManagement {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "Invitta"
 include(":app")
+include(":core:testing")
 include(":feature:home:api")
 include(":feature:home:impl")
