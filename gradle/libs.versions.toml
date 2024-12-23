@@ -17,6 +17,7 @@ composeBom = "2024.12.01"
 
 koin = "4.0.1"
 
+napier = "2.6.1"
 ktlint = "12.1.2"
 detekt = "1.23.7"
 detekt-compose = "0.4.22"
@@ -46,6 +47,7 @@ koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = 
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 
+napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
 detetkcompose = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "detekt-compose" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }

@@ -2,6 +2,8 @@ package com.jujodevs.invitta
 
 import android.app.Application
 import com.jujodevs.invitta.di.appModule
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
@@ -13,6 +15,8 @@ class InvittApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        Napier.base(DebugAntilog())
 
         startKoin {
             androidLogger()

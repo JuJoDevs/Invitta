@@ -6,9 +6,11 @@ import com.jujodevs.invitta.buildlogic.convention.configureKotlinAndroid
 import com.jujodevs.invitta.buildlogic.convention.getTargetSdk
 import com.jujodevs.invitta.buildlogic.convention.getVersionCode
 import com.jujodevs.invitta.buildlogic.convention.getVersionName
+import com.jujodevs.invitta.buildlogic.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 
 class ApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -32,6 +34,10 @@ class ApplicationConventionPlugin : Plugin<Project> {
                         isIncludeAndroidResources = true
                     }
                 }
+            }
+
+            dependencies {
+                add("implementation", libs.findLibrary("napier").get())
             }
         }
     }
