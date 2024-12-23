@@ -15,6 +15,8 @@ lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.12.01"
 
+koin = "4.0.1"
+
 ktlint = "12.1.2"
 detekt = "1.23.7"
 detekt-compose = "0.4.22"
@@ -39,6 +41,10 @@ androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 
 detetkcompose = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "detekt-compose" }
 
@@ -69,6 +75,9 @@ compose-debug = [
     "androidx-compose-ui-tooling",
     "androidx-compose-ui-test-manifest",
 ]
+
+koin = ["koin-core", "koin-android"]
+koin-compose = ["koin-core", "koin-android", "koin-androidx-compose"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
