@@ -27,6 +27,9 @@ internal fun configureAppBuildTypes(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro",
                 )
+                ndk {
+                    debugSymbolLevel = "FULL"
+                }
             }
         }
     }
@@ -50,6 +53,9 @@ internal fun configureLibraryBuildTypes(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro",
                 )
+                ndk {
+                    debugSymbolLevel = "FULL"
+                }
             }
         }
     }
