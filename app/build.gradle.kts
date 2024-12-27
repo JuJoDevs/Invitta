@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
 
+    implementation(projects.core.designSystem)
     implementation(projects.core.stringResources)
     implementation(projects.library.logger.api)
     implementation(projects.library.logger.impl)
