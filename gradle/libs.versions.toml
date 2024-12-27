@@ -64,6 +64,7 @@ koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compos
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-remote-config = { module = "com.google.firebase:firebase-config" }
 
 napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
 detetkcompose = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "detekt-compose" }

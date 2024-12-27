@@ -3,6 +3,7 @@ package com.jujodevs.invitta
 import android.app.Application
 import com.jujodevs.invitta.di.appModule
 import com.jujodevs.invitta.library.logger.impl.loggerModule
+import com.jujodevs.invitta.library.remoteconfig.impl.di.remoteConfigModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
@@ -21,6 +22,7 @@ class InvittApp : Application() {
             modules(
                 appModule,
                 loggerModule,
+                remoteConfigModule,
             )
         }
     }
