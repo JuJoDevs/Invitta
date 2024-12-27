@@ -1,13 +1,9 @@
 plugins {
-    alias(libs.plugins.convention.android.library)
-}
-
-android {
-    namespace = "com.jujodevs.invitta.library.logger.impl"
+    alias(libs.plugins.convention.jvm.library)
 }
 
 dependencies {
     implementation(projects.library.logger.api)
-    implementation(libs.bundles.koin)
+    implementation(libs.koin.core)
     implementation(libs.napier)
 }
