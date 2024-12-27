@@ -25,6 +25,11 @@ android {
     }
 }
 
+dependencies {
+    implementation(projects.library.logger.api)
+    implementation(projects.library.logger.impl)
+}
+
 tasks.named("preBuild")
     .configure {
         dependsOn(":copyGitHooks")
