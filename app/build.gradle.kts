@@ -3,6 +3,8 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.convention.application.compose)
     alias(libs.plugins.convention.android.test)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.crashlytics)
 }
 
 android {
@@ -26,6 +28,10 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+
     implementation(projects.library.logger.api)
     implementation(projects.library.logger.impl)
 }
