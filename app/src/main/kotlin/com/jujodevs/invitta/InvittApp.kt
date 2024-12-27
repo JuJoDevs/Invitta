@@ -2,8 +2,7 @@ package com.jujodevs.invitta
 
 import android.app.Application
 import com.jujodevs.invitta.di.appModule
-import io.github.aakira.napier.DebugAntilog
-import io.github.aakira.napier.Napier
+import com.jujodevs.invitta.library.logger.impl.loggerModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
@@ -16,13 +15,12 @@ class InvittApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Napier.base(DebugAntilog())
-
         startKoin {
             androidLogger()
             androidContext(this@InvittApp)
             modules(
                 appModule,
+                loggerModule,
             )
         }
     }
