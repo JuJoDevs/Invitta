@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.convention.android.library)
+    alias(libs.plugins.convention.android.test)
 }
 
 android {
