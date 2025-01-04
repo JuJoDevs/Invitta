@@ -1,6 +1,7 @@
 package com.jujodevs.invitta
 
 import android.app.Application
+import com.jujodevs.invitta.core.coroutines.coroutinesModule
 import com.jujodevs.invitta.di.appModule
 import com.jujodevs.invitta.library.logger.impl.loggerModule
 import com.jujodevs.invitta.library.remoteconfig.impl.di.remoteConfigModule
@@ -21,6 +22,7 @@ class InvittApp : Application() {
             androidContext(this@InvittApp)
             modules(
                 appModule,
+                coroutinesModule,
                 loggerModule,
                 remoteConfigModule,
             )

@@ -33,6 +33,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
 
+    implementation(projects.core.coroutines)
     implementation(projects.core.designSystem)
     implementation(projects.core.domain)
     implementation(projects.core.stringResources)
