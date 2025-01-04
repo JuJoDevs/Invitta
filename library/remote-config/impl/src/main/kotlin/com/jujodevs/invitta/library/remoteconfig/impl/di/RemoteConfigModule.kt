@@ -9,6 +9,6 @@ import org.koin.dsl.module
 
 val remoteConfigModule =
     module {
-        single<FirebaseRemoteConfig> { Firebase.remoteConfig }
-        single<RemoteConfigProvider> { FirebaseRemoteConfigProvider(get()) }
+        single<FirebaseRemoteConfig>(createdAtStart = true) { Firebase.remoteConfig }
+        single<RemoteConfigProvider>(createdAtStart = true) { FirebaseRemoteConfigProvider(get()) }
     }

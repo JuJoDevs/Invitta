@@ -1,1 +1,0 @@
--keep class com.jujodevs.invitta.library.remoteconfig.impl.di.RemoteConfigModuleKt { *; }

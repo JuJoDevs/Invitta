@@ -1,1 +1,0 @@
--keep class com.jujodevs.invitta.core.designsystem.** { *; }
