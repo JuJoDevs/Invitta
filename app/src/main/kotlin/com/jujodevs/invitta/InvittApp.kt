@@ -4,6 +4,8 @@ import android.app.Application
 import com.jujodevs.invitta.core.activityprovider.impl.di.activityProviderModule
 import com.jujodevs.invitta.core.coroutines.coroutinesModule
 import com.jujodevs.invitta.di.appModule
+import com.jujodevs.invitta.library.authservice.impl.di.authServiceModule
+import com.jujodevs.invitta.library.googleauth.impl.di.googleAuthModule
 import com.jujodevs.invitta.library.logger.impl.loggerModule
 import com.jujodevs.invitta.library.remoteconfig.impl.di.remoteConfigModule
 import kotlinx.coroutines.CoroutineScope
@@ -25,6 +27,7 @@ class InvittApp : Application() {
                 activityProviderModule,
                 appModule,
                 coroutinesModule,
+                googleAuthModule,
                 loggerModule,
                 remoteConfigModule,
             )

@@ -13,7 +13,6 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class DefaultActivityProviderTest {
-
     private lateinit var application: Application
     private lateinit var activityProvider: DefaultActivityProvider
 
