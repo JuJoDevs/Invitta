@@ -28,6 +28,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "Invitta"
 include(":app")
 include(":core:design-system")
+include(":core:domain")
 include(":core:string-resources")
 include(":core:testing")
 include(":feature:home:api")
