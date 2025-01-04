@@ -25,6 +25,7 @@ class InvittApp : Application() {
             androidContext(this@InvittApp)
             modules(
                 activityProviderModule,
+                authServiceModule,
                 appModule,
                 coroutinesModule,
                 googleAuthModule,

@@ -23,6 +23,7 @@ class JvmTestConventionPlugin : Plugin<Project> {
                 "testImplementation"(libs.findLibrary("turbine").get())
                 "testImplementation"(libs.findLibrary("koin.test").get())
                 "testImplementation"(libs.findLibrary("koin.test.junit5").get())
+                "testImplementation"(libs.findLibrary("kotlinx.coroutines.test").get())
             }
         }
     }

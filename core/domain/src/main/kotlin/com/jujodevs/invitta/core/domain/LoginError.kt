@@ -4,6 +4,9 @@ interface LoginError : Error {
     enum class AuthService : LoginError {
         ANONYMOUS_LOGIN_FAILED,
         GOOGLE_LOGIN_FAILED,
+        NO_USER_LOGGED,
+        LINKING_FAILED,
+        AUTH_USER_COLLISION,
     }
 
     enum class GoogleAuth : LoginError {
