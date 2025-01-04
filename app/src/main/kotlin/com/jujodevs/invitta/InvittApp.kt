@@ -1,6 +1,7 @@
 package com.jujodevs.invitta
 
 import android.app.Application
+import com.jujodevs.invitta.core.activityprovider.impl.di.activityProviderModule
 import com.jujodevs.invitta.core.coroutines.coroutinesModule
 import com.jujodevs.invitta.di.appModule
 import com.jujodevs.invitta.library.logger.impl.loggerModule
@@ -21,6 +22,7 @@ class InvittApp : Application() {
             androidLogger()
             androidContext(this@InvittApp)
             modules(
+                activityProviderModule,
                 appModule,
                 coroutinesModule,
                 loggerModule,
