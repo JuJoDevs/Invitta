@@ -8,6 +8,7 @@ import com.jujodevs.invitta.library.authservice.impl.di.authServiceModule
 import com.jujodevs.invitta.library.googleauth.impl.di.googleAuthModule
 import com.jujodevs.invitta.library.logger.impl.loggerModule
 import com.jujodevs.invitta.library.remoteconfig.impl.di.remoteConfigModule
+import com.jujodevs.invitta.library.remotedatabase.impl.di.remoteDatabaseModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
@@ -31,6 +32,7 @@ class InvittApp : Application() {
                 googleAuthModule,
                 loggerModule,
                 remoteConfigModule,
+                remoteDatabaseModule,
             )
         }
     }

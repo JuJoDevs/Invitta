@@ -22,11 +22,18 @@ import com.jujodevs.invitta.core.designsystem.theme.InvittaTheme
 import com.jujodevs.invitta.core.domain.Result
 import com.jujodevs.invitta.library.authservice.api.AuthService
 import com.jujodevs.invitta.library.googleauth.api.GoogleAuth
+import com.jujodevs.invitta.library.remotedatabase.api.RemoteEventDatabase
+import com.jujodevs.invitta.library.remotedatabase.api.RemoteUserDatabase
+import com.jujodevs.invitta.library.remotedatabase.api.model.dto.UserDto
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<MainViewModel>()
+    private val firestoreRemoteEventDatabase: RemoteEventDatabase by inject()
+    private val firestoreRemoteUserDatabase: RemoteUserDatabase by inject()
     private val googleAuth: GoogleAuth by inject()
     private val authService: AuthService by inject()
     private val googleClick: () -> Unit = {
@@ -37,7 +44,7 @@ class MainActivity : ComponentActivity() {
                     is Result.Success -> {
                         when (
                             val authResult =
-                                authService.loginAndLinkWithGoogle(resultGoogleAuth.data)
+                                authService.loginWithGoogle(resultGoogleAuth.data)
                         ) {
                             is Result.Error -> authResult.error.javaClass.simpleName
                             is Result.Success -> authResult.data
@@ -63,8 +70,29 @@ class MainActivity : ComponentActivity() {
             !viewModel.state.isInitialized
         }
 
-        lifecycleScope.launch {
-            authService.loginAnonymously()
+        lifecycleScope.launch(Dispatchers.IO) {
+            firestoreRemoteUserDatabase.setUser(UserDto(), authService.getCurrentUserId()) {}
+            firestoreRemoteUserDatabase.getUser(authService.getCurrentUserId()).collectLatest {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            firestoreRemoteEventDatabase.getEvent("eventId").collectLatest {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            firestoreRemoteEventDatabase.getEvents().collectLatest {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         setContent {

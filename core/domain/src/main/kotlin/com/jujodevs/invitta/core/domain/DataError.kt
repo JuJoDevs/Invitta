@@ -1,18 +1,13 @@
 package com.jujodevs.invitta.core.domain
-sealed interface DataError : Error {
-    enum class Network : DataError {
-        REQUEST_TIMEOUT,
-        UNAUTHORIZED,
-        CONFLICT,
-        TOO_MANY_REQUESTS,
-        NO_INTERNET,
-        PAYLOAD_TOO_LARGE,
-        SERVER_ERROR,
-        SERIALIZATION,
-        UNKNOWN,
-    }
 
-    enum class Local : DataError {
-        DISK_FULL,
+sealed interface DataError : Error {
+    enum class RemoteDatabase : DataError {
+        DATABASE,
+        UNAUTHORIZED,
+        NO_INTERNET,
+        NO_SIGNED_IN_USER,
+        API_NOT_AVAILABLE,
+        TOO_MANY_REQUESTS,
+        UNKNOWN,
     }
 }

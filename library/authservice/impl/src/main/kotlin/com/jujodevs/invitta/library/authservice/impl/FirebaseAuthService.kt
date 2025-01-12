@@ -93,6 +93,10 @@ class FirebaseAuthService(
         return firebaseAuth.currentUser != null
     }
 
+    override fun getCurrentUserId(): String {
+        return firebaseAuth.currentUser?.uid ?: ""
+    }
+
     override fun logout() {
         firebaseAuth.signOut()
     }

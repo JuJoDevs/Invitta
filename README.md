@@ -18,8 +18,7 @@
 - **Libraries**:
     - [Jetpack Compose](https://developer.android.com/jetpack/compose) for declarative UI development.
     - [Koin](https://insert-koin.io) for dependency injection.
-    - [Room](https://developer.android.com/jetpack/androidx/releases/room) for local data persistence.
-    - [Ktor](https://ktor.io) for networking and API calls.
+    - [Firestore](https://firebase.google.com/docs/firestore) for remote data persistence.
     - [State](https://developer.android.com/jetpack/compose/state) from Compose for state management.
     - [Flow](https://developer.android.com/kotlin/flow) for reactive data streams and asynchronous event handling.
 - **Minimum Requirements**:
@@ -53,13 +52,13 @@ cd invitta-android
 ---
 
 ## 📜 License
-This project is licensed under the [Apache License Version 2.0](LICENSE).  
+This project is licensed under the [Apache License Version 2.0](LICENSE).
 Feel free to explore the code, but kindly give proper credit if you use any part of it. 🙌
 
 ---
 
 ## 💡 Contributions
-**At the moment, this project is part of a personal portfolio, and contributions are not being accepted.**  
+**At the moment, this project is part of a personal portfolio, and contributions are not being accepted.**
 Feel free to view and learn from the code or create an issue, but pull requests will not be reviewed.
 
 ---

@@ -8,5 +8,6 @@ interface AuthService {
     suspend fun loginAndLinkWithGoogle(tokenId: String): Result<String, Error>
     suspend fun loginWithGoogle(tokenId: String): Result<String, Error>
     fun isUserLogged(): Boolean
+    fun getCurrentUserId(): String
     fun logout()
 }
