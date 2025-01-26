@@ -3,6 +3,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.convention.application.compose)
     alias(libs.plugins.convention.android.test)
+    alias(libs.plugins.serialization)
     alias(libs.plugins.google.services)
     alias(libs.plugins.crashlytics)
 }
@@ -28,6 +29,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.compose.navigation)
     implementation(libs.androidx.core.splashscreen)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
@@ -40,6 +43,8 @@ dependencies {
     implementation(projects.core.presentation.designSystem)
     implementation(projects.core.presentation.ui)
     implementation(projects.core.presentation.stringResources)
+    implementation(projects.feature.home.api)
+    implementation(projects.feature.home.impl)
     implementation(projects.library.authservice.api)
     implementation(projects.library.authservice.impl)
     implementation(projects.library.googleauth.api)

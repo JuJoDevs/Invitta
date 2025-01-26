@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Invitta">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".presentation.ui.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Invitta.Starting">
             <intent-filter>

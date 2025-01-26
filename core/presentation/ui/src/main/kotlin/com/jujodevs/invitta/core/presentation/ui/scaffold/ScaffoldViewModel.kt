@@ -1,19 +1,20 @@
 package com.jujodevs.invitta.core.presentation.ui.scaffold
 
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class ScaffoldViewModel(
-    val snackbarHostState: SnackbarHostState,
-) : ViewModel() {
+class ScaffoldViewModel : ViewModel() {
     var state by mutableStateOf(ScaffoldState())
         private set
+
+    private val _effect = Channel<ScaffoldEffect>()
+    val effect = _effect.receiveAsFlow()
 
     fun onEvent(event: ScaffoldEvent) {
         when (event) {
@@ -35,15 +36,7 @@ class ScaffoldViewModel(
         onAction: () -> Unit = {},
     ) {
         viewModelScope.launch {
-            val result =
-                snackbarHostState.showSnackbar(
-                    message = message,
-                    actionLabel = actionLabel,
-                )
-            when (result) {
-                SnackbarResult.ActionPerformed -> onAction()
-                SnackbarResult.Dismissed -> Unit
-            }
+            _effect.send(ScaffoldEffect.ShowSnackbar(message, actionLabel, onAction))
         }
     }
 }

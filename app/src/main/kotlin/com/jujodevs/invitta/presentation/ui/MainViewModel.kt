@@ -1,4 +1,4 @@
-package com.jujodevs.invitta.ui
+package com.jujodevs.invitta.presentation.ui
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
