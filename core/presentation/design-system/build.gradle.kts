@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.jujodevs.invitta.core.designsystem"
+    namespace = "com.jujodevs.invitta.core.presentation.designsystem"
 }
 
 dependencies {
@@ -14,5 +14,5 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     api(libs.androidx.compose.material3)
 
-    implementation(projects.core.stringResources)
+    implementation(projects.core.presentation.stringResources)
 }

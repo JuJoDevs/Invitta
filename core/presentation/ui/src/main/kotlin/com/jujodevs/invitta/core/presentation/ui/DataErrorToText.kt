@@ -1,7 +1,7 @@
 package com.jujodevs.invitta.core.presentation.ui
 
 import com.jujodevs.invitta.core.domain.DataError
-import com.jujodevs.invitta.core.stringresources.R
+import com.jujodevs.invitta.core.presentation.stringresources.R
 
 fun DataError.asUiText(): UiText {
     return when (this) {

@@ -8,6 +8,6 @@ android {
 
 dependencies {
     implementation(projects.core.domain)
-    implementation(projects.core.stringResources)
+    implementation(projects.core.presentation.stringResources)
     implementation(libs.bundles.compose)
 }

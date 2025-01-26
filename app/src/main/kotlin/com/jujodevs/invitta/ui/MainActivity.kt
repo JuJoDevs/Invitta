@@ -21,9 +21,9 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jujodevs.invitta.core.designsystem.theme.InvittaTheme
 import com.jujodevs.invitta.core.domain.DataError
 import com.jujodevs.invitta.core.domain.LoginError
+import com.jujodevs.invitta.core.presentation.stringresources.R
 import com.jujodevs.invitta.core.presentation.ui.ObserveAsEffects
 import com.jujodevs.invitta.core.presentation.ui.asUiText
-import com.jujodevs.invitta.core.stringresources.R
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

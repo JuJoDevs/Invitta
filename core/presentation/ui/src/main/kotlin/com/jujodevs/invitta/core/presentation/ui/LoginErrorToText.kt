@@ -1,7 +1,7 @@
 package com.jujodevs.invitta.core.presentation.ui
 
 import com.jujodevs.invitta.core.domain.LoginError
-import com.jujodevs.invitta.core.stringresources.R
+import com.jujodevs.invitta.core.presentation.stringresources.R
 
 fun LoginError.asUiText(): UiText {
     return when (this) {
