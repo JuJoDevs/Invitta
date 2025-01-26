@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="anonymous_login_failed_login_error">Inicio de sesión anónimo fallido. Por favor, inténtelo de nuevo más tarde.</string>
+    <string name="google_login_failed_login_error">Inicio de sesión con Google fallido. Por favor, revisa tu conexión e inténtalo de nuevo.</string>
+    <string name="no_user_logged_login_error">No hay ningún usuario conectado. Por favor, inicia sesión para continuar.</string>
+    <string name="linking_failed_login_error">Vinculación de cuentas fallida. Por favor, inténtalo de nuevo o contacta al soporte.</string>
+    <string name="auth_user_collision_login_error">Conflicto de cuentas detectado. Por favor, verifica tus credenciales o contacta al soporte.</string>
+    <string name="google_sign_in_failed_login_error">Proceso de inicio de sesión con Google fallido. Por favor, inténtalo de nuevo.</string>
+    <string name="web_client_id_not_found_login_error">Error de configuración en la autenticación de Google. Por favor, contacta al soporte.</string>
+    <string name="unexpected_credential_type_login_error">Error inesperado durante el inicio de sesión con Google. Por favor, inténtalo de nuevo.</string>
+    <string name="no_activity_login_error">No se puede proceder con el inicio de sesión de Google. Por favor, inténtalo más tarde.</string>
+</resources>
