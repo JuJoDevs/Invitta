@@ -38,6 +38,7 @@ dependencies {
     implementation(projects.core.coroutines)
     implementation(projects.core.designSystem)
     implementation(projects.core.domain)
+    implementation(projects.core.presentation.ui)
     implementation(projects.core.stringResources)
     implementation(projects.library.authservice.api)
     implementation(projects.library.authservice.impl)

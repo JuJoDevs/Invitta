@@ -1,5 +1,8 @@
 package com.jujodevs.invitta.ui
 
-data class MainState(
-    val isInitialized: Boolean = false,
+import com.jujodevs.invitta.core.domain.Error
+
+internal data class MainState(
+    val isLogged: Boolean = false,
+    val error: Error? = null,
 )

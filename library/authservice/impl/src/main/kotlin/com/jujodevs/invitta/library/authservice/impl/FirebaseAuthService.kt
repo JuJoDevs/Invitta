@@ -6,7 +6,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.GoogleAuthProvider
-import com.jujodevs.invitta.core.domain.Error
 import com.jujodevs.invitta.core.domain.LoginError
 import com.jujodevs.invitta.core.domain.Result
 import com.jujodevs.invitta.library.authservice.api.AuthService
@@ -20,7 +19,7 @@ class FirebaseAuthService(
     private val firebaseAuth: FirebaseAuth,
     private val logger: Logger,
 ) : AuthService {
-    override suspend fun loginAnonymously(): Result<String, Error> {
+    override suspend fun loginAnonymously(): Result<String, LoginError> {
         return try {
             val result =
                 firebaseAuth.signInAnonymously()
@@ -37,7 +36,7 @@ class FirebaseAuthService(
         }
     }
 
-    override suspend fun loginAndLinkWithGoogle(tokenId: String): Result<String, Error> {
+    override suspend fun loginAndLinkWithGoogle(tokenId: String): Result<String, LoginError> {
         val currentAnonymousUid = firebaseAuth.currentUser?.uid
         val credential = GoogleAuthProvider.getCredential(tokenId, null)
         return if (currentAnonymousUid == null) {
@@ -52,7 +51,7 @@ class FirebaseAuthService(
         }
     }
 
-    override suspend fun loginWithGoogle(tokenId: String): Result<String, Error> {
+    override suspend fun loginWithGoogle(tokenId: String): Result<String, LoginError> {
         val credential = GoogleAuthProvider.getCredential(tokenId, null)
         val result = completeRegisterWithCredential(credential)
         return result?.let {
@@ -62,7 +61,7 @@ class FirebaseAuthService(
 
     private suspend fun linkAccountWithCredential(
         credential: AuthCredential,
-    ): Result<String, Error> {
+    ): Result<String, LoginError> {
         return suspendCancellableCoroutine { continuation ->
             firebaseAuth.currentUser?.linkWithCredential(credential)
                 ?.addOnSuccessListener { result ->

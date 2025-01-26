@@ -1,64 +1,34 @@
 package com.jujodevs.invitta.ui
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.lifecycleScope
 import com.jujodevs.invitta.core.designsystem.theme.InvittaTheme
-import com.jujodevs.invitta.core.domain.Result
-import com.jujodevs.invitta.library.authservice.api.AuthService
-import com.jujodevs.invitta.library.googleauth.api.GoogleAuth
-import com.jujodevs.invitta.library.remotedatabase.api.RemoteEventDatabase
-import com.jujodevs.invitta.library.remotedatabase.api.RemoteUserDatabase
-import com.jujodevs.invitta.library.remotedatabase.api.model.dto.UserDto
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
+import com.jujodevs.invitta.core.domain.DataError
+import com.jujodevs.invitta.core.domain.LoginError
+import com.jujodevs.invitta.core.presentation.ui.ObserveAsEffects
+import com.jujodevs.invitta.core.presentation.ui.asUiText
+import com.jujodevs.invitta.core.stringresources.R
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
-    private val viewModel by viewModels<MainViewModel>()
-    private val firestoreRemoteEventDatabase: RemoteEventDatabase by inject()
-    private val firestoreRemoteUserDatabase: RemoteUserDatabase by inject()
-    private val googleAuth: GoogleAuth by inject()
-    private val authService: AuthService by inject()
-    private val googleClick: () -> Unit = {
-        lifecycleScope.launch {
-            val result =
-                when (val resultGoogleAuth = googleAuth.login()) {
-                    is Result.Error -> resultGoogleAuth.error.javaClass.simpleName
-                    is Result.Success -> {
-                        when (
-                            val authResult =
-                                authService.loginWithGoogle(resultGoogleAuth.data)
-                        ) {
-                            is Result.Error -> authResult.error.javaClass.simpleName
-                            is Result.Success -> authResult.data
-                        }
-                    }
-                }
-            Toast.makeText(
-                this@MainActivity,
-                result,
-                Toast.LENGTH_SHORT,
-            )
-                .show()
-        }
-    }
+    private val viewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
@@ -67,63 +37,71 @@ class MainActivity : ComponentActivity() {
         viewModel.initialize()
 
         splashScreen.setKeepOnScreenCondition {
-            !viewModel.state.isInitialized
-        }
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            firestoreRemoteUserDatabase.setUser(UserDto(), authService.getCurrentUserId()) {}
-            firestoreRemoteUserDatabase.getUser(authService.getCurrentUserId()).collectLatest {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            firestoreRemoteEventDatabase.getEvent("eventId").collectLatest {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            firestoreRemoteEventDatabase.getEvents().collectLatest {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_SHORT).show()
-                }
-            }
+            !(viewModel.state.isLogged || viewModel.state.error != null)
         }
 
         setContent {
             InvittaTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                val scope = rememberCoroutineScope()
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                ObserveAsEffects(flow = viewModel.effect) { effect ->
+                    when (effect) {
+                        is MainEffect.ShowError ->
+                            scope.launch {
+                                showErrorInSnackbar(
+                                    snackbarHostState,
+                                    effect,
+                                )
+                            }
+                    }
+                }
+
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    snackbarHost = { SnackbarHost(snackbarHostState) },
+                ) { innerPadding ->
                     TemporalScreen(
-                        googleClick = googleClick,
                         modifier = Modifier.padding(innerPadding),
                     )
                 }
             }
         }
     }
+
+    private suspend fun showErrorInSnackbar(
+        snackbarHostState: SnackbarHostState,
+        effect: MainEffect.ShowError,
+    ) {
+        snackbarHostState.showSnackbar(
+            message =
+                when (val error = effect.error) {
+                    is LoginError ->
+                        error.asUiText()
+                            .asString(this)
+
+                    is DataError ->
+                        error.asUiText()
+                            .asString(this)
+
+                    else -> getString(R.string.unknown_error)
+                },
+            actionLabel = getString(R.string.ok),
+        )
+    }
 }
 
 @Composable
-fun TemporalScreen(
-    googleClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun TemporalScreen(modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
         modifier =
             modifier
                 .fillMaxSize(),
     ) {
-        Button(googleClick) {
-            Text(
-                text = "INVITTA",
-            )
-        }
+        Text(
+            text = "INVITTA",
+        )
     }
 }
 
@@ -133,7 +111,6 @@ private fun GreetingPreview() {
     InvittaTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             TemporalScreen(
-                googleClick = {},
                 modifier = Modifier.padding(innerPadding),
             )
         }
