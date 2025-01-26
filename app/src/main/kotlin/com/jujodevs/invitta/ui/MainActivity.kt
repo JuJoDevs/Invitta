@@ -7,28 +7,35 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jujodevs.invitta.core.designsystem.theme.InvittaTheme
-import com.jujodevs.invitta.core.domain.DataError
 import com.jujodevs.invitta.core.domain.LoginError
 import com.jujodevs.invitta.core.presentation.stringresources.R
 import com.jujodevs.invitta.core.presentation.ui.ObserveAsEffects
-import com.jujodevs.invitta.core.presentation.ui.asUiText
-import kotlinx.coroutines.launch
+import com.jujodevs.invitta.core.presentation.ui.getErrorMessage
+import com.jujodevs.invitta.core.presentation.ui.scaffold.ScaffoldEvent
+import com.jujodevs.invitta.core.presentation.ui.scaffold.ScaffoldState
+import com.jujodevs.invitta.core.presentation.ui.scaffold.ScaffoldViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
     private val viewModel by viewModel<MainViewModel>()
+    private val scaffoldViewModel by viewModel<ScaffoldViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
@@ -42,57 +49,62 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             InvittaTheme {
-                val scope = rememberCoroutineScope()
-                val snackbarHostState = remember { SnackbarHostState() }
-
                 ObserveAsEffects(flow = viewModel.effect) { effect ->
                     when (effect) {
                         is MainEffect.ShowError ->
-                            scope.launch {
-                                showErrorInSnackbar(
-                                    snackbarHostState,
-                                    effect,
-                                )
-                            }
+                            scaffoldViewModel.onEvent(
+                                ScaffoldEvent.ShowSnackbar(
+                                    getErrorMessage(effect.error),
+                                    getString(R.string.ok),
+                                    if (effect.error is LoginError) {
+                                        { finish() }
+                                    } else {
+                                        { }
+                                    },
+                                ),
+                            )
                     }
                 }
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    snackbarHost = { SnackbarHost(snackbarHostState) },
+                    topBar = scaffoldViewModel.state.topBar,
+                    floatingActionButton = scaffoldViewModel.state.floatingActionButton,
+                    snackbarHost = { SnackbarHost(scaffoldViewModel.snackbarHostState) },
                 ) { innerPadding ->
-                    TemporalScreen(
-                        modifier = Modifier.padding(innerPadding),
-                    )
+                    if (viewModel.state.isLogged) {
+                        TemporalScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            scaffoldViewModel = scaffoldViewModel,
+                        )
+                    }
                 }
             }
         }
     }
-
-    private suspend fun showErrorInSnackbar(
-        snackbarHostState: SnackbarHostState,
-        effect: MainEffect.ShowError,
-    ) {
-        snackbarHostState.showSnackbar(
-            message =
-                when (val error = effect.error) {
-                    is LoginError ->
-                        error.asUiText()
-                            .asString(this)
-
-                    is DataError ->
-                        error.asUiText()
-                            .asString(this)
-
-                    else -> getString(R.string.unknown_error)
-                },
-            actionLabel = getString(R.string.ok),
-        )
-    }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TemporalScreen(modifier: Modifier = Modifier) {
+fun TemporalScreen(
+    scaffoldViewModel: ScaffoldViewModel,
+    modifier: Modifier = Modifier,
+) {
+    scaffoldViewModel.onEvent(
+        ScaffoldEvent.UpdateScaffoldState(
+            ScaffoldState(
+                topBar = { TopAppBar(title = { Text(stringResource(R.string.app_name)) }) },
+                floatingActionButton = {
+                    FloatingActionButton(onClick = {
+                        scaffoldViewModel.onEvent(ScaffoldEvent.ShowSnackbar("Test", null))
+                    }) {
+                        Icon(Icons.Default.Add, contentDescription = "Add")
+                    }
+                },
+            ),
+        ),
+    )
+
     Box(
         contentAlignment = Alignment.Center,
         modifier =
@@ -111,6 +123,7 @@ private fun GreetingPreview() {
     InvittaTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             TemporalScreen(
+                scaffoldViewModel = ScaffoldViewModel(SnackbarHostState()),
                 modifier = Modifier.padding(innerPadding),
             )
         }
