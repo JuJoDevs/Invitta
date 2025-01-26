@@ -9,4 +9,11 @@
     <string name="web_client_id_not_found_login_error">Error de configuración en la autenticación de Google. Por favor, contacta al soporte.</string>
     <string name="unexpected_credential_type_login_error">Error inesperado durante el inicio de sesión con Google. Por favor, inténtalo de nuevo.</string>
     <string name="no_activity_login_error">No se puede proceder con el inicio de sesión de Google. Por favor, inténtalo más tarde.</string>
+    <string name="database_data_error">Error de base de datos. Por favor, inténtelo de nuevo más tarde.</string>
+    <string name="unauthorized_data_error">Acceso denegado. Verifique sus credenciales o contacte al soporte.</string>
+    <string name="no_internet_data_error">Sin conexión a internet. Verifique su configuración de red.</string>
+    <string name="no_signed_in_user_data_error">Ningún usuario ha iniciado sesión. Por favor, inicie sesión para continuar.</string>
+    <string name="api_not_available_data_error">Servicio no disponible. Por favor, inténtelo de nuevo más tarde.</string>
+    <string name="too_many_requests_data_error">Demasiadas solicitudes. Espere un momento e inténtelo de nuevo.</string>
+    <string name="unknown_data_error">Error inesperado. Contacte al soporte si persiste.</string>
 </resources>
