@@ -38,6 +38,33 @@ class FirestoreRemoteNucleusDatabaseTest {
     }
 
     @Test
+    fun `GIVEN nucleus data WHEN addNucleus THEN calls addListeners`() =
+        runTest {
+            val nucleus = NucleusDto(name = "Nucleus Name")
+            val eventId = "event123"
+            val groupId = "group123"
+            val nucleusId = "nucleus123"
+            val onResult = mockk<(Result<String, DataError>) -> Unit>()
+            val task = mockk<Task<DocumentReference>>()
+            val documentReference = mockk<DocumentReference>()
+            val successListenerSlot = slot<OnSuccessListener<DocumentReference>>()
+            val failureListenerSlot = slot<OnFailureListener>()
+            val exception = RuntimeException("Simulated Failure")
+            every { nucleusCollection.add(nucleus) } returns task
+            every { task.addOnSuccessListener(capture(successListenerSlot)) } returns task
+            every { task.addOnFailureListener(capture(failureListenerSlot)) } returns task
+            every { documentReference.id } returns nucleusId
+            every { onResult(any()) } returns Unit
+
+            remoteNucleusDatabase.addNucleus(nucleus, eventId, groupId, onResult)
+
+            successListenerSlot.captured.onSuccess(documentReference)
+            verifyOnce { onResult(Result.Success(nucleusId)) }
+            failureListenerSlot.captured.onFailure(exception)
+            verifyOnce { onResult(Result.Error(DataError.RemoteDatabase.UNKNOWN)) }
+        }
+
+    @Test
     fun `GIVEN nucleus data WHEN setNucleus THEN calls addListeners`() =
         runTest {
             val nucleus = NucleusDto(name = "Nucleus Name")

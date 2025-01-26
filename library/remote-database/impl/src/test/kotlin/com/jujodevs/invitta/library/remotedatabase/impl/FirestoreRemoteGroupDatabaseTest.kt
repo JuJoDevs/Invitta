@@ -10,7 +10,9 @@ import com.jujodevs.invitta.core.domain.DataError
 import com.jujodevs.invitta.core.domain.Result
 import com.jujodevs.invitta.core.testing.verifyOnce
 import com.jujodevs.invitta.library.remotedatabase.api.model.dto.GroupDto
+import io.mockk.Runs
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.test.runTest
@@ -33,6 +35,32 @@ class FirestoreRemoteGroupDatabaseTest {
 
         remoteGroupDatabase = FirestoreRemoteGroupDatabase(db)
     }
+
+    @Test
+    fun `GIVEN group data WHEN addGroup THEN calls addListeners`() =
+        runTest {
+            val group = GroupDto(name = "Group Name")
+            val eventId = "event123"
+            val groupId = "group123"
+            val onResult = mockk<(Result<String, DataError>) -> Unit>()
+            val task = mockk<Task<DocumentReference>>()
+            val documentReference = mockk<DocumentReference>()
+            val successListenerSlot = slot<OnSuccessListener<DocumentReference>>()
+            val failureListenerSlot = slot<OnFailureListener>()
+            val exception = RuntimeException("Simulated Failure")
+            every { groupsCollection.add(group) } returns task
+            every { task.addOnSuccessListener(capture(successListenerSlot)) } returns task
+            every { task.addOnFailureListener(capture(failureListenerSlot)) } returns task
+            every { documentReference.id } returns groupId
+            every { onResult(any()) } just Runs
+
+            remoteGroupDatabase.addGroup(group, eventId, onResult)
+
+            successListenerSlot.captured.onSuccess(documentReference)
+            verifyOnce { onResult(Result.Success(groupId)) }
+            failureListenerSlot.captured.onFailure(exception)
+            verifyOnce { onResult(Result.Error(DataError.RemoteDatabase.UNKNOWN)) }
+        }
 
     @Test
     fun `GIVEN group data WHEN setGroup THEN calls addListeners`() =

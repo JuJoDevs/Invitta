@@ -23,7 +23,9 @@ import com.jujodevs.invitta.library.remotedatabase.api.model.response.MemberResp
 import com.jujodevs.invitta.library.remotedatabase.api.model.response.NucleusResponse
 import com.jujodevs.invitta.library.remotedatabase.impl.mapper.toFirebaseEventDto
 import com.jujodevs.invitta.library.remotedatabase.impl.model.FirebaseEventResponse
+import io.mockk.Runs
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.slot
@@ -208,6 +210,37 @@ class FirestoreRemoteEventDatabaseTest {
                 )
             }
         }
+
+    @Test
+    fun `GIVEN event data WHEN addEvent THEN calls addListeners`() {
+        val eventDto =
+            EventDto(
+                organizerId = "organizer123",
+                name = "Sample Event",
+                dateSeconds = 1672531200,
+                description = "This is a test event",
+            )
+        val eventId = "event123"
+        val exception = RuntimeException("Simulated Failure")
+        val onResult: (Result<String, DataError>) -> Unit = mockk()
+        val task = mockk<Task<DocumentReference>>()
+        val documentReference = mockk<DocumentReference>()
+        val successListenerSlot = slot<OnSuccessListener<DocumentReference>>()
+        val failureListenerSlot = slot<OnFailureListener>()
+        every { onResult(any()) } just Runs
+        every { eventsCollection.add(eventDto) } returns task
+        every { task.addOnSuccessListener(capture(successListenerSlot)) } returns task
+        every { task.addOnFailureListener(capture(failureListenerSlot)) } returns task
+        every { onResult(any()) } returns Unit
+        every { documentReference.id } returns eventId
+
+        remoteEventDatabase.addEvent(eventDto, onResult)
+
+        successListenerSlot.captured.onSuccess(documentReference)
+        verifyOnce { onResult(Result.Success(eventId)) }
+        failureListenerSlot.captured.onFailure(exception)
+        verifyOnce { onResult(Result.Error(DataError.RemoteDatabase.UNKNOWN)) }
+    }
 
     @Test
     fun `GIVEN event data WHEN setEvent THEN calls addListeners`() {

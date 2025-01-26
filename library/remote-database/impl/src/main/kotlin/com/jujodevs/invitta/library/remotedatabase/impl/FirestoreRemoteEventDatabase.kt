@@ -155,6 +155,14 @@ class FirestoreRemoteEventDatabase(
         } ?: flowOf(nucleusResponse)
     }
 
+    override fun addEvent(
+        eventDto: EventDto,
+        onResult: (Result<String, DataError>) -> Unit,
+    ) {
+        eventsCollection.add(eventDto)
+            .addDocumentReferenceListeners(onResult)
+    }
+
     override fun setEvent(
         eventDto: EventDto,
         eventId: String,
@@ -162,7 +170,7 @@ class FirestoreRemoteEventDatabase(
     ) {
         eventsCollection.document(eventId)
             .set(eventDto.toFirebaseEventDto())
-            .addListeners(onResult)
+            .addVoidListeners(onResult)
     }
 
     override fun deleteEvent(
@@ -171,7 +179,7 @@ class FirestoreRemoteEventDatabase(
     ) {
         eventsCollection.document(eventId)
             .delete()
-            .addListeners(onResult)
+            .addVoidListeners(onResult)
     }
 
     override suspend fun migrateEmailEvents(email: String): EmptyResult<DataError> {

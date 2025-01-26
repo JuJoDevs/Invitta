@@ -42,7 +42,7 @@ class FirestoreRemoteUserDatabase(
         onResult: (EmptyResult<DataError>) -> Unit,
     ) {
         usersCollection.document(id).set(user)
-            .addListeners(onResult)
+            .addVoidListeners(onResult)
     }
 
     override fun deleteUser(
@@ -50,7 +50,7 @@ class FirestoreRemoteUserDatabase(
         onResult: (EmptyResult<DataError>) -> Unit,
     ) {
         usersCollection.document(id).delete()
-            .addListeners(onResult)
+            .addVoidListeners(onResult)
     }
 }
 

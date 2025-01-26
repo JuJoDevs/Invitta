@@ -1,4 +1,4 @@
-name: Meditation CI
+name: Invitta CI
 
 on:
   push:

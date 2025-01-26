@@ -42,7 +42,7 @@ class FirestoreRemoteMemberDatabaseTest {
     }
 
     @Test
-    fun `GIVEN member data WHEN setMember with new memberId THEN adds member and updates references`() =
+    fun `GIVEN member data WHEN addMember THEN adds member and updates references`() =
         runTest {
             val member =
                 MemberDto(
@@ -54,30 +54,30 @@ class FirestoreRemoteMemberDatabaseTest {
             val nucleusId = "nucleus123"
             val newMemberId = "newMember123"
             val exception = RuntimeException("Simulated Failure")
-            val onResult = mockk<(Result<Unit, DataError>) -> Unit>()
-            val task = mockk<Task<Void>>()
-            val successListenerSlot = slot<OnSuccessListener<Void>>()
+            val onResult = mockk<(Result<String, DataError>) -> Unit>()
+            val task = mockk<Task<DocumentReference>>()
+            val taskVoid = mockk<Task<Void>>()
+            val successListenerSlot = slot<OnSuccessListener<DocumentReference>>()
             val failureListenerSlot = slot<OnFailureListener>()
             every { membersCollection.document() } returns documentReference
             every { documentReference.id } returns newMemberId
-            every { membersCollection.document(newMemberId) } returns documentReference
-            every { documentReference.set(member) } returns task
-            every { documentReference.update(AUTHORIZED_MEMBER_IDS_FIELD, any()) } returns task
+            every { membersCollection.add(member) } returns task
+            every { documentReference.update(AUTHORIZED_MEMBER_IDS_FIELD, any()) } returns taskVoid
             every { task.addOnSuccessListener(capture(successListenerSlot)) } returns task
             every { task.addOnFailureListener(capture(failureListenerSlot)) } returns task
             every { onResult(any()) } returns Unit
 
-            remoteMemberDatabase.setMember(member, eventId, groupId, nucleusId, null, onResult)
-            successListenerSlot.captured.onSuccess(null)
+            remoteMemberDatabase.addMember(member, eventId, groupId, nucleusId, onResult)
+            successListenerSlot.captured.onSuccess(documentReference)
             failureListenerSlot.captured.onFailure(exception)
 
-            verifyOnce { onResult(Result.Success(Unit)) }
+            verifyOnce { onResult(Result.Success(newMemberId)) }
             verifyOnce { onResult(Result.Error(DataError.RemoteDatabase.UNKNOWN)) }
             verify(exactly = 3) { documentReference.update(AUTHORIZED_MEMBER_IDS_FIELD, any()) }
         }
 
     @Test
-    fun `GIVEN member data WHEN setMember with existing memberId THEN updates member`() =
+    fun `GIVEN member data WHEN setMember THEN updates member`() =
         runTest {
             val member =
                 MemberDto(
