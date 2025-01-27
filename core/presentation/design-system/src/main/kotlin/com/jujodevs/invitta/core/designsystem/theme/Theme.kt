@@ -12,16 +12,48 @@ import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme =
     darkColorScheme(
-        primary = Purple80,
-        secondary = PurpleGrey80,
-        tertiary = Pink80,
+        primary = PurplePrimaryDark,
+        onPrimary = PurpleOnPrimaryDark,
+        primaryContainer = PurpleContainerDark,
+        onPrimaryContainer = PurpleOnContainerDark,
+        secondary = YellowSecondaryDark,
+        onSecondary = YellowOnSecondaryDark,
+        secondaryContainer = YellowContainerDark,
+        onSecondaryContainer = YellowOnContainerDark,
+        tertiary = TealTertiaryDark,
+        onTertiary = TealOnTertiaryDark,
+        tertiaryContainer = TealContainerDark,
+        onTertiaryContainer = TealOnContainerDark,
+        background = BlackBackgroundDark,
+        onBackground = GrayOnBackgroundDark,
+        surface = BlackSurfaceDark,
+        onSurface = GrayOnSurfaceDark,
+        surfaceVariant = GrayVariantSurfaceDark,
+        onSurfaceVariant = GrayOnVariantSurfaceDark,
+        outline = GrayOutlineDark,
     )
 
 private val LightColorScheme =
     lightColorScheme(
-        primary = Purple40,
-        secondary = PurpleGrey40,
-        tertiary = Pink40,
+        primary = PurplePrimaryLight,
+        onPrimary = PurpleOnPrimaryLight,
+        primaryContainer = PurpleContainerLight,
+        onPrimaryContainer = PurpleOnContainerLight,
+        secondary = YellowSecondaryLight,
+        onSecondary = YellowOnSecondaryLight,
+        secondaryContainer = YellowContainerLight,
+        onSecondaryContainer = YellowOnContainerLight,
+        tertiary = TealTertiaryLight,
+        onTertiary = TealOnTertiaryLight,
+        tertiaryContainer = TealContainerLight,
+        onTertiaryContainer = TealOnContainerLight,
+        background = WhiteBackgroundLight,
+        onBackground = GrayOnBackgroundLight,
+        surface = WhiteSurfaceLight,
+        onSurface = GrayOnSurfaceLight,
+        surfaceVariant = GrayVariantSurfaceLight,
+        onSurfaceVariant = GrayOnVariantSurfaceLight,
+        outline = GrayOutlineLight,
     )
 
 @Composable
