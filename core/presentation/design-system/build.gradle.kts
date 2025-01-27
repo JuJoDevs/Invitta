@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.convention.android.library.compose)
+    alias(libs.plugins.convention.android.test)
+    alias(libs.plugins.convention.paparazzi)
 }
 
 android {

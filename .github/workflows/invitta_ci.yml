@@ -64,3 +64,6 @@ jobs:
 
       - name: Unit tests
         run: ./gradlew testDebugUnitTest
+
+      - name: Screenshot tests
+        run: ./gradlew verifyPaparazziDebug
