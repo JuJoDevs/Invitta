@@ -3,6 +3,7 @@ package com.jujodevs.invitta.core.designsystem.theme
 import androidx.compose.ui.unit.dp
 
 object Dimens {
+    val zero = 0.dp
     val extraSmall = 2.dp
     val small = 4.dp
     val mediumSmall = 6.dp

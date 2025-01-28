@@ -2,8 +2,8 @@ package com.jujodevs.invitta.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
-const val PURPLE_PRIMARY_DARK = 0xFFB39DFF
-const val PURPLE_ON_PRIMARY_DARK = 0xFF23005A
+const val PURPLE_PRIMARY_DARK = 0xFFBEAAF0
+const val PURPLE_ON_PRIMARY_DARK = 0xFF150036
 const val PURPLE_CONTAINER_DARK = 0xFF5C34AB
 const val PURPLE_ON_CONTAINER_DARK = 0xFFEDE7FF
 const val YELLOW_SECONDARY_DARK = 0xFFFFD180

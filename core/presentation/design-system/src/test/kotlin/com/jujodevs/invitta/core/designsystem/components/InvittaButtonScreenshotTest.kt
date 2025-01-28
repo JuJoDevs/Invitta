@@ -58,7 +58,12 @@ class InvittaButtonScreenshotTest(
                     onClick = {},
                     icon =
                         if (testCase.hasIcon) {
-                            { Icon(Icons.Default.Add, contentDescription = "Add") }
+                            {
+                                Icon(
+                                    Icons.Default.Add,
+                                    contentDescription = "Add",
+                                )
+                            }
                         } else {
                             {}
                         },

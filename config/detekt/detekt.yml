@@ -800,6 +800,7 @@ Compose:
     active: true
   ModifierMissing:
     active: true
+    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**' ]
   ModifierNaming:
     active: true
   ModifierNotUsedAtRoot:
