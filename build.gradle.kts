@@ -58,6 +58,12 @@ allprojects {
 
 tasks.register("copyGitHooks") {
     doLast {
+        val gitDir = file(".git")
+        if (!gitDir.exists()) {
+            logger.warn(".git directory not found, skipping git hooks copy.")
+            return@doLast
+        }
+
         val sourceDir = file("hooks")
         val targetDir = file(".git/hooks")
         sourceDir.listFiles()
@@ -76,6 +82,9 @@ tasks.register("copyGitHooks") {
             }
     }
     doLast {
+        val gitDir = file(".git")
+        if (!gitDir.exists()) return@doLast
+
         file(".git/hooks/").walk()
             .forEach { file ->
                 if (file.isFile) {
