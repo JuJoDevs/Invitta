@@ -8,13 +8,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import com.jujodevs.invitta.core.designsystem.theme.Dimens
 import com.jujodevs.invitta.core.designsystem.theme.InvittaTheme
+import com.jujodevs.invitta.core.designsystem.theme.dimens
 
 @Composable
 fun InvittaButton(
@@ -25,8 +26,12 @@ fun InvittaButton(
 ) {
     Button(
         modifier = modifier,
-        shape = RoundedCornerShape(Dimens.mediumLarge),
-        contentPadding = PaddingValues(horizontal = Dimens.medium, vertical = Dimens.extraSmall),
+        shape = RoundedCornerShape(MaterialTheme.dimens.mediumLarge),
+        contentPadding =
+            PaddingValues(
+                horizontal = MaterialTheme.dimens.medium,
+                vertical = MaterialTheme.dimens.extraSmall,
+            ),
         onClick = onClick,
     ) {
         Row(
@@ -34,7 +39,7 @@ fun InvittaButton(
         ) {
             icon()
             Text(
-                modifier = Modifier.padding(horizontal = Dimens.mediumSmall),
+                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.mediumSmall),
                 text = label,
             )
         }

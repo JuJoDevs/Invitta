@@ -778,6 +778,7 @@ Compose:
     active: true
   CompositionLocalAllowlist:
     active: true
+    excludes: [ '**/Theme.kt' ]
   CompositionLocalNaming:
     active: true
   ContentEmitterReturningValues:

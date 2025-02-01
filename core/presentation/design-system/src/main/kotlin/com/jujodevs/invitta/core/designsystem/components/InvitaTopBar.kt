@@ -17,8 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import com.jujodevs.invitta.core.designsystem.theme.Dimens
 import com.jujodevs.invitta.core.designsystem.theme.InvittaTheme
+import com.jujodevs.invitta.core.designsystem.theme.dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,7 +60,7 @@ private fun InvitttaTopBarPreview() {
                         InvittaButton(
                             label = "Delete",
                             onClick = {},
-                            modifier = Modifier.padding(horizontal = Dimens.medium),
+                            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.medium),
                         )
                     },
                 )

@@ -29,8 +29,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.jujodevs.invitta.core.designsystem.theme.Dimens
 import com.jujodevs.invitta.core.designsystem.theme.InvittaTheme
+import com.jujodevs.invitta.core.designsystem.theme.dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,10 +41,11 @@ fun InvittaCenterTopBar(
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     val density = LocalDensity.current
+    val minWidth = MaterialTheme.dimens.mediumLarge
     var navIconWidth by remember { mutableStateOf(0.dp) }
     var actionsWidth by remember { mutableStateOf(0.dp) }
     val maxWidth by remember {
-        derivedStateOf { maxOf(navIconWidth, actionsWidth, Dimens.mediumLarge) }
+        derivedStateOf { maxOf(navIconWidth, actionsWidth, minWidth) }
     }
     TopAppBar(
         navigationIcon = {

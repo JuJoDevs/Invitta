@@ -5,13 +5,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams
-import com.jujodevs.invitta.core.designsystem.theme.Dimens
 import com.jujodevs.invitta.core.designsystem.theme.InvittaTheme
+import com.jujodevs.invitta.core.designsystem.theme.dimens
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -116,7 +117,7 @@ class InvitttaTopBarScreenshotTest(
             InvittaButton(
                 label = "Delete",
                 onClick = {},
-                modifier = Modifier.padding(horizontal = Dimens.medium),
+                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.medium),
             )
         }
     }
