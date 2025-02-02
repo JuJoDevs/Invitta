@@ -21,5 +21,7 @@
     <string name="no_signed_in_user_data_error">No user is signed in. Please log in to continue.</string>
     <string name="api_not_available_data_error">Service unavailable. Please try again later.</string>
     <string name="too_many_requests_data_error">Too many requests. Wait a moment and try again.</string>
+    <string name="event_not_found_data_error">Event not found. It may have been deleted or does not exist.</string>
+    <string name="empty_uid_data_error">Invalid user ID. Please log in again or contact support.</string>
     <string name="unknown_data_error">Unexpected error. Contact support if it persists.</string>
 </resources>

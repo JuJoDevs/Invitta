@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -44,10 +45,10 @@ class FirestoreRemoteUserDatabaseTest {
     }
 
     @Test
-    fun `GIVEN empty uid WHEN getUser THEN returns empty UserResponse`() =
+    fun `GIVEN empty uid WHEN getUser THEN returns empty uid error`() =
         runTest {
             remoteUserDatabase.getUser("").test {
-                awaitItem() shouldBeEqualTo UserResponse()
+                awaitItem() shouldBeEqualTo Result.Error(DataError.RemoteDatabase.EMPTY_UID)
                 awaitComplete()
             }
         }
@@ -64,17 +65,17 @@ class FirestoreRemoteUserDatabaseTest {
             every { documentReference.snapshots() } returns snapshotsFlow
 
             remoteUserDatabase.getUser(uid).test {
-                awaitItem() shouldBeEqualTo userResponse.copy(id = uid)
+                awaitItem() shouldBeEqualTo Result.Success(userResponse.copy(id = uid))
                 awaitComplete()
             }
         }
 
     @Test
-    fun `GIVEN exception WHEN getUser THEN logs error and returns empty UserResponse`() =
+    fun `GIVEN exception WHEN getUser THEN logs error and returns DataError`() =
         runTest {
             val uid = "12345"
             val expectedMsg = "Error getting Firestore document"
-            val exception = RuntimeException(expectedMsg)
+            val exception = FirebaseNetworkException(expectedMsg)
             every { documentReference.snapshots() } answers {
                 flow {
                     throw exception
@@ -83,7 +84,7 @@ class FirestoreRemoteUserDatabaseTest {
             every { logger.e(any(), exception) } returns Unit
 
             remoteUserDatabase.getUser(uid).test {
-                awaitItem() shouldBeEqualTo UserResponse()
+                awaitItem() shouldBeEqualTo Result.Error(DataError.RemoteDatabase.NO_INTERNET)
                 awaitComplete()
             }
             verifyOnce { logger.e(expectedMsg, exception) }

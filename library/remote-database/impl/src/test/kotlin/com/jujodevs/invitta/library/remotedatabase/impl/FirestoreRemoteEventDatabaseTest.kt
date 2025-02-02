@@ -1,9 +1,11 @@
 package com.jujodevs.invitta.library.remotedatabase.impl
 
+import android.text.TextUtils
 import app.cash.turbine.test
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -48,6 +50,9 @@ class FirestoreRemoteEventDatabaseTest {
 
     @BeforeEach
     fun setUp() {
+        mockkStatic(TextUtils::class)
+        every { TextUtils.isEmpty("") } returns true
+        every { TextUtils.isEmpty(any()) } returns false
         mockkStatic("com.google.firebase.firestore.FirestoreKt")
         every { db.collection(EVENTS_COLLECTION) } returns eventsCollection
         every { eventsCollection.document(any()) } returns documentReference
@@ -60,11 +65,16 @@ class FirestoreRemoteEventDatabaseTest {
     }
 
     @Test
-    fun `GIVEN empty uid WHEN getEvent THEN returns empty EventResponse`() =
+    fun `GIVEN empty uid WHEN getEvent THEN returns EVENT_NOT_FOUND`() =
         runTest {
+            val eventSnapshot =
+                mockk<DocumentSnapshot> {
+                    every { exists() } returns false
+                }
+            every { documentReference.snapshots() } returns flowOf(eventSnapshot)
             remoteEventDatabase.getEvent("")
                 .test {
-                    awaitItem() shouldBeEqualTo EventResponse()
+                    awaitItem() shouldBeEqualTo Result.Error(DataError.RemoteDatabase.EVENT_NOT_FOUND)
                     awaitComplete()
                 }
         }
@@ -158,40 +168,42 @@ class FirestoreRemoteEventDatabaseTest {
             remoteEventDatabase.getEvent(eventId)
                 .test {
                     awaitItem() shouldBeEqualTo
-                        EventResponse(
-                            id = eventId,
-                            name = eventName,
-                            groups =
-                                listOf(
-                                    GroupResponse(
-                                        id = groupId,
-                                        name = groupName,
-                                        nucleus =
-                                            listOf(
-                                                NucleusResponse(
-                                                    id = nucleusId,
-                                                    name = nucleusName,
-                                                    members =
-                                                        listOf(
-                                                            MemberResponse(
-                                                                id = memberId,
-                                                                name = memberName,
+                        Result.Success(
+                            EventResponse(
+                                id = eventId,
+                                name = eventName,
+                                groups =
+                                    listOf(
+                                        GroupResponse(
+                                            id = groupId,
+                                            name = groupName,
+                                            nucleus =
+                                                listOf(
+                                                    NucleusResponse(
+                                                        id = nucleusId,
+                                                        name = nucleusName,
+                                                        members =
+                                                            listOf(
+                                                                MemberResponse(
+                                                                    id = memberId,
+                                                                    name = memberName,
+                                                                ),
                                                             ),
-                                                        ),
+                                                    ),
                                                 ),
-                                            ),
+                                        ),
                                     ),
-                                ),
+                            ),
                         )
                     awaitComplete()
                 }
         }
 
     @Test
-    fun `GIVEN exception WHEN getEvent THEN logs error and returns empty EventResponse`() =
+    fun `GIVEN exception WHEN getEvent THEN logs error and returns DataError`() =
         runTest {
             val eventId = "event123"
-            val exception = RuntimeException("Simulated Error")
+            val exception = FirebaseNetworkException("Simulated Error")
             every { documentReference.snapshots() } answers { flow { throw exception } }
             every {
                 logger.e(
@@ -202,7 +214,7 @@ class FirestoreRemoteEventDatabaseTest {
 
             remoteEventDatabase.getEvent(eventId)
                 .test {
-                    awaitItem() shouldBeEqualTo EventResponse()
+                    awaitItem() shouldBeEqualTo Result.Error(DataError.RemoteDatabase.NO_INTERNET)
                     awaitComplete()
                 }
             verifyOnce {

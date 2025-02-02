@@ -9,8 +9,8 @@ import com.jujodevs.invitta.library.remotedatabase.api.model.response.EventRespo
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteEventDatabase {
-    fun getEvents(): Flow<List<EventResponse>>
-    fun getEvent(eventId: String): Flow<EventResponse>
+    fun getEvents(): Flow<Result<List<EventResponse>, DataError>>
+    fun getEvent(eventId: String): Flow<Result<EventResponse, DataError>>
     fun addEvent(
         eventDto: EventDto,
         onResult: (Result<String, DataError>) -> Unit,

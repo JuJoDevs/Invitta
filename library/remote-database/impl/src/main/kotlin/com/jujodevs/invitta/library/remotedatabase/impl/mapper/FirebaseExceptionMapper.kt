@@ -22,8 +22,16 @@ fun FirebaseException.toError(): DataError {
 }
 
 fun Exception.toRemoteDatabaseError(): DataError {
-    return if (this is FirebaseAuthException) {
+    return if (this is FirebaseException) {
         this.toError()
+    } else {
+        DataError.RemoteDatabase.UNKNOWN
+    }
+}
+
+fun Throwable.toRemoteDatabaseError(): DataError {
+    return if (this is Exception) {
+        this.toRemoteDatabaseError()
     } else {
         DataError.RemoteDatabase.UNKNOWN
     }

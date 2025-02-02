@@ -29,6 +29,14 @@ fun DataError.asUiText(): UiText {
             UiText.StringResource(
                 R.string.too_many_requests_data_error,
             )
+        DataError.RemoteDatabase.EVENT_NOT_FOUND ->
+            UiText.StringResource(
+                R.string.event_not_found_data_error,
+            )
+        DataError.RemoteDatabase.EMPTY_UID ->
+            UiText.StringResource(
+                R.string.empty_uid_data_error,
+            )
         DataError.RemoteDatabase.UNKNOWN ->
             UiText.StringResource(
                 R.string.unknown_data_error,

@@ -5,10 +5,12 @@ import com.google.firebase.firestore.snapshots
 import com.google.firebase.firestore.toObject
 import com.jujodevs.invitta.core.domain.DataError
 import com.jujodevs.invitta.core.domain.EmptyResult
+import com.jujodevs.invitta.core.domain.Result
 import com.jujodevs.invitta.library.logger.api.Logger
 import com.jujodevs.invitta.library.remotedatabase.api.RemoteUserDatabase
 import com.jujodevs.invitta.library.remotedatabase.api.model.dto.UserDto
 import com.jujodevs.invitta.library.remotedatabase.api.model.response.UserResponse
+import com.jujodevs.invitta.library.remotedatabase.impl.mapper.toRemoteDatabaseError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
@@ -20,19 +22,21 @@ class FirestoreRemoteUserDatabase(
 ) : RemoteUserDatabase {
     private val usersCollection = db.collection(USERS_COLLECTION)
 
-    override fun getUser(uid: String): Flow<UserResponse> {
-        if (uid.isEmpty()) return flowOf(UserResponse())
+    override fun getUser(uid: String): Flow<Result<UserResponse, DataError>> {
+        if (uid.isEmpty()) return flowOf(Result.Error(DataError.RemoteDatabase.EMPTY_UID))
         return usersCollection.document(uid)
             .snapshots()
             .map { qs ->
-                qs.toObject<UserResponse>()?.copy(id = qs.id) ?: UserResponse()
+                Result.Success(
+                    qs.toObject<UserResponse>()?.copy(id = qs.id) ?: UserResponse(),
+                ) as Result<UserResponse, DataError>
             }
             .catch {
                 logger.e(
                     it.message ?: "",
                     it,
                 )
-                emit(UserResponse())
+                emit(Result.Error(it.toRemoteDatabaseError()))
             }
     }
 

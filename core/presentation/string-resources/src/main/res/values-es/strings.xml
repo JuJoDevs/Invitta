@@ -17,5 +17,7 @@
     <string name="no_signed_in_user_data_error">Ningún usuario ha iniciado sesión. Por favor, inicie sesión para continuar.</string>
     <string name="api_not_available_data_error">Servicio no disponible. Por favor, inténtelo de nuevo más tarde.</string>
     <string name="too_many_requests_data_error">Demasiadas solicitudes. Espere un momento e inténtelo de nuevo.</string>
+    <string name="event_not_found_data_error">Evento no encontrado. Puede que haya sido eliminado o no exista.</string>
+    <string name="empty_uid_data_error">ID de usuario inválido. Inicie sesión nuevamente o contacte al soporte.</string>
     <string name="unknown_data_error">Error inesperado. Contacte al soporte si persiste.</string>
 </resources>

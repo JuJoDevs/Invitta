@@ -8,6 +8,8 @@ sealed interface DataError : Error {
         NO_SIGNED_IN_USER,
         API_NOT_AVAILABLE,
         TOO_MANY_REQUESTS,
+        EVENT_NOT_FOUND,
+        EMPTY_UID,
         UNKNOWN,
     }
 }

@@ -22,6 +22,7 @@ import com.jujodevs.invitta.library.remotedatabase.api.model.response.NucleusRes
 import com.jujodevs.invitta.library.remotedatabase.impl.mapper.toError
 import com.jujodevs.invitta.library.remotedatabase.impl.mapper.toEventResponse
 import com.jujodevs.invitta.library.remotedatabase.impl.mapper.toFirebaseEventDto
+import com.jujodevs.invitta.library.remotedatabase.impl.mapper.toRemoteDatabaseError
 import com.jujodevs.invitta.library.remotedatabase.impl.model.FirebaseEventResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -40,7 +41,7 @@ class FirestoreRemoteEventDatabase(
 ) : RemoteEventDatabase {
     private val eventsCollection = db.collection(EVENTS_COLLECTION)
 
-    override fun getEvents(): Flow<List<EventResponse>> {
+    override fun getEvents(): Flow<Result<List<EventResponse>, DataError>> {
         return eventsCollection
             .orderBy(
                 DATE_FIELD,
@@ -48,24 +49,26 @@ class FirestoreRemoteEventDatabase(
             )
             .snapshots()
             .map { qs ->
-                qs.documents.map {
-                    it.toObject<FirebaseEventResponse>()
-                        ?.copy(id = it.id)
-                        ?.toEventResponse()
-                        ?: EventResponse()
-                }
+                Result.Success(
+                    qs.documents.map {
+                        it.toObject<FirebaseEventResponse>()
+                            ?.copy(id = it.id)
+                            ?.toEventResponse()
+                            ?: EventResponse()
+                    },
+                ) as Result<List<EventResponse>, DataError>
             }
             .catch {
                 logger.e(
                     it.message ?: "",
                     it,
                 )
-                emit(emptyList())
+                emit(Result.Error(it.toRemoteDatabaseError()))
             }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getEvent(eventId: String): Flow<EventResponse> =
+    override fun getEvent(eventId: String): Flow<Result<EventResponse, DataError>> =
         flow {
             val eventDocument = eventsCollection.document(eventId)
             val eventSnapshotFlow = eventDocument.snapshots()
@@ -99,12 +102,18 @@ class FirestoreRemoteEventDatabase(
                     }
                 },
             )
+        }.map {
+            if (it == EventResponse()) {
+                Result.Error(DataError.RemoteDatabase.EVENT_NOT_FOUND)
+            } else {
+                Result.Success(it) as Result<EventResponse, DataError>
+            }
         }.catch {
             logger.e(
                 it.message ?: "",
                 it,
             )
-            emit(EventResponse())
+            emit(Result.Error(it.toRemoteDatabaseError()))
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -171,7 +180,10 @@ class FirestoreRemoteEventDatabase(
         onResult: (EmptyResult<DataError>) -> Unit,
     ) {
         eventsCollection.document(eventId)
-            .set(eventDto.toFirebaseEventDto(), SetOptions.merge())
+            .set(
+                eventDto.toFirebaseEventDto(),
+                SetOptions.merge(),
+            )
             .addVoidListeners(onResult)
     }
 
