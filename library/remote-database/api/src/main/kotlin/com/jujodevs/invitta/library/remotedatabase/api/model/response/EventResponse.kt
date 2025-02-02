@@ -11,6 +11,5 @@ data class EventResponse(
     val locationName: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val authorizedMembersId: List<String> = emptyList(),
     val groups: List<GroupResponse> = emptyList(),
 )

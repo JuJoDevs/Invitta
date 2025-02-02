@@ -1,11 +1,13 @@
 package com.jujodevs.invitta.library.remotedatabase.impl
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.jujodevs.invitta.core.domain.DataError
 import com.jujodevs.invitta.core.domain.EmptyResult
 import com.jujodevs.invitta.core.domain.Result
 import com.jujodevs.invitta.library.remotedatabase.api.RemoteGroupDatabase
 import com.jujodevs.invitta.library.remotedatabase.api.model.dto.GroupDto
+import com.jujodevs.invitta.library.remotedatabase.api.model.dto.UpdateGroupDto
 
 class FirestoreRemoteGroupDatabase(
     db: FirebaseFirestore,
@@ -23,7 +25,7 @@ class FirestoreRemoteGroupDatabase(
     }
 
     override fun setGroup(
-        group: GroupDto,
+        group: UpdateGroupDto,
         eventId: String,
         groupId: String,
         onResult: (EmptyResult<DataError>) -> Unit,
@@ -31,7 +33,7 @@ class FirestoreRemoteGroupDatabase(
         eventsCollection.document(eventId)
             .collection(GROUPS_COLLECTION)
             .document(groupId)
-            .set(group)
+            .set(group, SetOptions.merge())
             .addVoidListeners(onResult)
     }
 

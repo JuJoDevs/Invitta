@@ -17,6 +17,7 @@ import com.jujodevs.invitta.core.domain.Result
 import com.jujodevs.invitta.core.testing.verifyOnce
 import com.jujodevs.invitta.library.logger.api.Logger
 import com.jujodevs.invitta.library.remotedatabase.api.model.dto.EventDto
+import com.jujodevs.invitta.library.remotedatabase.api.model.dto.UpdateEventDto
 import com.jujodevs.invitta.library.remotedatabase.api.model.response.EventResponse
 import com.jujodevs.invitta.library.remotedatabase.api.model.response.GroupResponse
 import com.jujodevs.invitta.library.remotedatabase.api.model.response.MemberResponse
@@ -245,7 +246,7 @@ class FirestoreRemoteEventDatabaseTest {
     @Test
     fun `GIVEN event data WHEN setEvent THEN calls addListeners`() {
         val eventDto =
-            EventDto(
+            UpdateEventDto(
                 organizerId = "organizer123",
                 name = "Sample Event",
                 dateSeconds = 1672531200,

@@ -27,7 +27,6 @@ class FirebaseEventResponseMapperTest {
                 GroupResponse(
                     id = "group1",
                     name = "Test Group",
-                    authorizedMembersId = listOf("member1"),
                     nucleus = emptyList(),
                 ),
             )
@@ -62,7 +61,6 @@ class FirebaseEventResponseMapperTest {
                 locationName = expectedLocationName,
                 latitude = expectedLatitude,
                 longitude = expectedLongitude,
-                authorizedMembersId = expectedAuthorizedMembersId,
                 groups = expectedGroups,
             )
     }

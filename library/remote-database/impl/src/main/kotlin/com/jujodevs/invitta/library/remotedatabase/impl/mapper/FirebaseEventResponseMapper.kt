@@ -15,7 +15,6 @@ fun FirebaseEventResponse.toEventResponse(): EventResponse {
         locationName = locationName,
         latitude = location?.latitude,
         longitude = location?.longitude,
-        authorizedMembersId = authorizedMembersId,
         groups = groups,
     )
 }

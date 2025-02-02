@@ -4,6 +4,7 @@ import com.jujodevs.invitta.core.domain.DataError
 import com.jujodevs.invitta.core.domain.EmptyResult
 import com.jujodevs.invitta.core.domain.Result
 import com.jujodevs.invitta.library.remotedatabase.api.model.dto.GroupDto
+import com.jujodevs.invitta.library.remotedatabase.api.model.dto.UpdateGroupDto
 
 interface RemoteGroupDatabase {
     fun addGroup(
@@ -12,7 +13,7 @@ interface RemoteGroupDatabase {
         onResult: (Result<String, DataError>) -> Unit,
     )
     fun setGroup(
-        group: GroupDto,
+        group: UpdateGroupDto,
         eventId: String,
         groupId: String,
         onResult: (EmptyResult<DataError>) -> Unit,

@@ -4,6 +4,7 @@ import com.jujodevs.invitta.core.domain.DataError
 import com.jujodevs.invitta.core.domain.EmptyResult
 import com.jujodevs.invitta.core.domain.Result
 import com.jujodevs.invitta.library.remotedatabase.api.model.dto.EventDto
+import com.jujodevs.invitta.library.remotedatabase.api.model.dto.UpdateEventDto
 import com.jujodevs.invitta.library.remotedatabase.api.model.response.EventResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -16,7 +17,7 @@ interface RemoteEventDatabase {
     )
 
     fun setEvent(
-        eventDto: EventDto,
+        eventDto: UpdateEventDto,
         eventId: String,
         onResult: (EmptyResult<DataError>) -> Unit,
     )

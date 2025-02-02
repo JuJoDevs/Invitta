@@ -10,6 +10,7 @@ import com.jujodevs.invitta.core.domain.DataError
 import com.jujodevs.invitta.core.domain.Result
 import com.jujodevs.invitta.core.testing.verifyOnce
 import com.jujodevs.invitta.library.remotedatabase.api.model.dto.GroupDto
+import com.jujodevs.invitta.library.remotedatabase.api.model.dto.UpdateGroupDto
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
@@ -65,7 +66,7 @@ class FirestoreRemoteGroupDatabaseTest {
     @Test
     fun `GIVEN group data WHEN setGroup THEN calls addListeners`() =
         runTest {
-            val group = GroupDto(name = "Group Name")
+            val group = UpdateGroupDto(name = "Group Name")
             val eventId = "event123"
             val groupId = "group123"
             val onResult = mockk<(Result<Unit, DataError>) -> Unit>()

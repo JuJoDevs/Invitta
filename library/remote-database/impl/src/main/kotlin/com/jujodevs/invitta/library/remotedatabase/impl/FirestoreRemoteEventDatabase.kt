@@ -4,6 +4,7 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.snapshots
 import com.google.firebase.firestore.toObject
 import com.jujodevs.invitta.core.coroutines.combineAll
@@ -13,6 +14,7 @@ import com.jujodevs.invitta.core.domain.Result
 import com.jujodevs.invitta.library.logger.api.Logger
 import com.jujodevs.invitta.library.remotedatabase.api.RemoteEventDatabase
 import com.jujodevs.invitta.library.remotedatabase.api.model.dto.EventDto
+import com.jujodevs.invitta.library.remotedatabase.api.model.dto.UpdateEventDto
 import com.jujodevs.invitta.library.remotedatabase.api.model.response.EventResponse
 import com.jujodevs.invitta.library.remotedatabase.api.model.response.GroupResponse
 import com.jujodevs.invitta.library.remotedatabase.api.model.response.MemberResponse
@@ -164,12 +166,12 @@ class FirestoreRemoteEventDatabase(
     }
 
     override fun setEvent(
-        eventDto: EventDto,
+        eventDto: UpdateEventDto,
         eventId: String,
         onResult: (EmptyResult<DataError>) -> Unit,
     ) {
         eventsCollection.document(eventId)
-            .set(eventDto.toFirebaseEventDto())
+            .set(eventDto.toFirebaseEventDto(), SetOptions.merge())
             .addVoidListeners(onResult)
     }
 

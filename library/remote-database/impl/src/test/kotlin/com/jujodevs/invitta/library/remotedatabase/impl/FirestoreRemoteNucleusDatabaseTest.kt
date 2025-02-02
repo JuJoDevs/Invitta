@@ -10,6 +10,7 @@ import com.jujodevs.invitta.core.domain.DataError
 import com.jujodevs.invitta.core.domain.Result
 import com.jujodevs.invitta.core.testing.verifyOnce
 import com.jujodevs.invitta.library.remotedatabase.api.model.dto.NucleusDto
+import com.jujodevs.invitta.library.remotedatabase.api.model.dto.UpdateNucleusDto
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
@@ -67,7 +68,7 @@ class FirestoreRemoteNucleusDatabaseTest {
     @Test
     fun `GIVEN nucleus data WHEN setNucleus THEN calls addListeners`() =
         runTest {
-            val nucleus = NucleusDto(name = "Nucleus Name")
+            val nucleus = UpdateNucleusDto(name = "Nucleus Name")
             val eventId = "event123"
             val groupId = "group123"
             val nucleusId = "nucleus123"

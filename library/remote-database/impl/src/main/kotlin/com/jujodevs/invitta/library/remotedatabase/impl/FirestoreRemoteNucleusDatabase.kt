@@ -1,11 +1,13 @@
 package com.jujodevs.invitta.library.remotedatabase.impl
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.jujodevs.invitta.core.domain.DataError
 import com.jujodevs.invitta.core.domain.EmptyResult
 import com.jujodevs.invitta.core.domain.Result
 import com.jujodevs.invitta.library.remotedatabase.api.RemoteNucleusDatabase
 import com.jujodevs.invitta.library.remotedatabase.api.model.dto.NucleusDto
+import com.jujodevs.invitta.library.remotedatabase.api.model.dto.UpdateNucleusDto
 
 class FirestoreRemoteNucleusDatabase(
     db: FirebaseFirestore,
@@ -26,7 +28,7 @@ class FirestoreRemoteNucleusDatabase(
     }
 
     override fun setNucleus(
-        nucleus: NucleusDto,
+        nucleus: UpdateNucleusDto,
         eventId: String,
         groupId: String,
         nucleusId: String,
@@ -37,7 +39,7 @@ class FirestoreRemoteNucleusDatabase(
             .document(groupId)
             .collection(NUCLEUS_COLLECTION)
             .document(nucleusId)
-            .set(nucleus)
+            .set(nucleus, SetOptions.merge())
             .addVoidListeners(onResult)
     }
 
