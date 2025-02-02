@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.jujodevs.invitta.core.presentation.stringresources.R
+import com.jujodevs.invitta.core.presentation.ui.UiText
 import com.jujodevs.invitta.core.presentation.ui.scaffold.ScaffoldEvent
 import com.jujodevs.invitta.core.presentation.ui.scaffold.ScaffoldState
 import com.jujodevs.invitta.core.presentation.ui.scaffold.ScaffoldViewModel
@@ -43,7 +44,7 @@ internal fun HomeRoot(
                         onClick = {
                             scaffoldViewModel.onEvent(
                                 ScaffoldEvent.ShowSnackbar(
-                                    "Test",
+                                    UiText.DynamicString("Test"),
                                     null,
                                 ),
                             )

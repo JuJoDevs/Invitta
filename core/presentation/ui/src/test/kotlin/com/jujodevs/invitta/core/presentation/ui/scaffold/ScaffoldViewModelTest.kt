@@ -1,6 +1,7 @@
 package com.jujodevs.invitta.core.presentation.ui.scaffold
 
 import app.cash.turbine.test
+import com.jujodevs.invitta.core.presentation.ui.UiText
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
@@ -27,8 +28,8 @@ class ScaffoldViewModelTest {
     fun `GIVEN a ShowSnackbar event WHEN it is received THEN the correct effect is sent`() =
         runTest {
             viewModel = ScaffoldViewModel()
-            val message = "Test Message"
-            val actionLabel = "Retry"
+            val message = UiText.DynamicString("Test Message")
+            val actionLabel = UiText.DynamicString("Retry")
             val onAction: () -> Unit = mockk()
             every { onAction() } just Runs
 
