@@ -19,12 +19,43 @@
     - [Jetpack Compose](https://developer.android.com/jetpack/compose) for declarative UI development.
     - [Koin](https://insert-koin.io) for dependency injection.
     - [Firestore](https://firebase.google.com/docs/firestore) for remote data persistence.
+    - [Firebase Authentication](https://firebase.google.com/docs/auth) for user authentication.
     - [State](https://developer.android.com/jetpack/compose/state) from Compose for state management.
     - [Flow](https://developer.android.com/kotlin/flow) for reactive data streams and asynchronous event handling.
 - **Minimum Requirements**:
     - Android 7.0 (API 24) or higher.
     - JDK 21.
     - Latest version of Android Studio that supports Java 21 (e.g., **Android Studio Giraffe or higher**).
+
+---
+
+## 📋 Requirements
+
+Before running the project, ensure you have the following setup:
+
+### **1️⃣ Configure `local.properties`**
+Add the following values to your `local.properties` file (located in the root of your project):
+
+```properties
+KEYSTORE_STORE_FILE=foo
+KEYSTORE_STORE_PASSWORD=foo
+KEYSTORE_KEY_ALIAS=foo
+KEYSTORE_KEY_PASSWORD=foo
+```
+These values are required for signing the application.
+
+### **2️⃣ Set up Firebase**
+The project requires a Firebase instance configured with the following services:
+
+- **Crashlytics**
+- **Analytics**
+- **Firestore**
+- **Authentication**
+
+#### **Steps to set up Firebase**
+1. Create a Firebase project in the [Firebase Console](https://console.firebase.google.com/).
+2. Enable **Crashlytics**, **Analytics**, **Firestore**, and **Authentication** in the Firebase settings.
+3. Download the **google-services.json** file and place it inside the `app/` directory.
 
 ---
 
