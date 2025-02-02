@@ -19,9 +19,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.jujodevs.invitta.core.designsystem.theme.InvittaTheme
 import com.jujodevs.invitta.core.domain.LoginError
-import com.jujodevs.invitta.core.presentation.stringresources.R
 import com.jujodevs.invitta.core.presentation.ui.ObserveAsEffects
-import com.jujodevs.invitta.core.presentation.ui.getErrorMessage
+import com.jujodevs.invitta.core.presentation.ui.asUiText
 import com.jujodevs.invitta.core.presentation.ui.scaffold.ScaffoldEffect
 import com.jujodevs.invitta.core.presentation.ui.scaffold.ScaffoldEvent
 import com.jujodevs.invitta.core.presentation.ui.scaffold.ScaffoldViewModel
@@ -93,13 +92,13 @@ class MainActivity : ComponentActivity() {
                 is MainEffect.ShowError ->
                     onEvent(
                         ScaffoldEvent.ShowSnackbar(
-                            getErrorMessage(effect.error),
-                            getString(R.string.ok),
-                            if (effect.error is LoginError) {
-                                { finish() }
-                            } else {
-                                { }
-                            },
+                            message = effect.error.asUiText(),
+                            onAction =
+                                if (effect.error is LoginError) {
+                                    { finish() }
+                                } else {
+                                    { }
+                                },
                         ),
                     )
             }
@@ -118,8 +117,8 @@ class MainActivity : ComponentActivity() {
                     scope.launch {
                         val result =
                             snackbarHostState.showSnackbar(
-                                message = effect.message,
-                                actionLabel = effect.actionLabel,
+                                message = effect.message.asString(this@MainActivity),
+                                actionLabel = effect.actionLabel?.asString(this@MainActivity),
                             )
                         when (result) {
                             SnackbarResult.ActionPerformed -> effect.onAction()

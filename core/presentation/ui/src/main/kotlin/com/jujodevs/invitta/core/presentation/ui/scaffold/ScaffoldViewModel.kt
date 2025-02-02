@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jujodevs.invitta.core.presentation.ui.UiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -31,8 +32,8 @@ class ScaffoldViewModel : ViewModel() {
     }
 
     private fun showSnackbar(
-        message: String,
-        actionLabel: String?,
+        message: UiText,
+        actionLabel: UiText?,
         onAction: () -> Unit = {},
     ) {
         viewModelScope.launch {
