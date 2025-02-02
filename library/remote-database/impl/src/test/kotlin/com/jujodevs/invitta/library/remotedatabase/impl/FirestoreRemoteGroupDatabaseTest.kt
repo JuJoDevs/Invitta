@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.jujodevs.invitta.core.domain.DataError
 import com.jujodevs.invitta.core.domain.Result
 import com.jujodevs.invitta.core.testing.verifyOnce
@@ -75,7 +76,7 @@ class FirestoreRemoteGroupDatabaseTest {
             val failureListenerSlot = slot<OnFailureListener>()
             val exception = RuntimeException("Simulated Failure")
             every { groupsCollection.document(groupId) } returns documentReference
-            every { documentReference.set(group) } returns task
+            every { documentReference.set(group, SetOptions.merge()) } returns task
             every { task.addOnSuccessListener(capture(successListenerSlot)) } returns task
             every { task.addOnFailureListener(capture(failureListenerSlot)) } returns task
             every { onResult(any()) } returns Unit

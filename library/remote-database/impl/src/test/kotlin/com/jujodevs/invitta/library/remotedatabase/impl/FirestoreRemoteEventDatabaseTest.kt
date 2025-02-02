@@ -10,6 +10,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.snapshots
 import com.google.firebase.firestore.toObject
 import com.jujodevs.invitta.core.domain.DataError
@@ -260,7 +261,7 @@ class FirestoreRemoteEventDatabaseTest {
         val failureListenerSlot = slot<OnFailureListener>()
         every {
             eventsCollection.document(eventId)
-                .set(eventDto.toFirebaseEventDto())
+                .set(eventDto.toFirebaseEventDto(), SetOptions.merge())
         } returns task
         every { task.addOnSuccessListener(capture(successListenerSlot)) } returns task
         every { task.addOnFailureListener(capture(failureListenerSlot)) } returns task
