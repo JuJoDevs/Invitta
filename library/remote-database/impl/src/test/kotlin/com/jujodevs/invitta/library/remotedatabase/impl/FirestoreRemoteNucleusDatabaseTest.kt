@@ -42,7 +42,9 @@ class FirestoreRemoteNucleusDatabaseTest {
     @Test
     fun `GIVEN nucleus data WHEN addNucleus THEN calls addListeners`() =
         runTest {
-            val nucleus = NucleusDto(name = "Nucleus Name")
+            val nucleusName = "Nucleus Name"
+            val organizerId = "organizer123"
+            val nucleus = NucleusDto(name = nucleusName, organizerId = organizerId)
             val eventId = "event123"
             val groupId = "group123"
             val nucleusId = "nucleus123"

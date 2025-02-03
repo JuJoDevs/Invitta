@@ -1,7 +1,6 @@
 package com.jujodevs.invitta.library.remotedatabase.api.model.dto
 
 data class UpdateEventDto(
-    val organizerId: String,
     val organizerEmail: String? = null,
     val name: String,
     val dateSeconds: Long,

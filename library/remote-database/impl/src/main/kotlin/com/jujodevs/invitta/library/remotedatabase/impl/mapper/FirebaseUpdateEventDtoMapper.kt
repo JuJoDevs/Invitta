@@ -7,7 +7,6 @@ import com.jujodevs.invitta.library.remotedatabase.impl.model.FirebaseUpdateEven
 
 fun UpdateEventDto.toFirebaseEventDto(): FirebaseUpdateEventDto {
     return FirebaseUpdateEventDto(
-        organizerId = organizerId,
         organizerEmail = organizerEmail,
         name = name,
         date = Timestamp(dateSeconds, 0),

@@ -67,12 +67,14 @@ class FirestoreRemoteEventDatabaseTest {
     @Test
     fun `GIVEN empty uid WHEN getEvent THEN returns EVENT_NOT_FOUND`() =
         runTest {
+            val uid = "testUid"
+            val emptyEventId = ""
             val eventSnapshot =
                 mockk<DocumentSnapshot> {
                     every { exists() } returns false
                 }
             every { documentReference.snapshots() } returns flowOf(eventSnapshot)
-            remoteEventDatabase.getEvent("")
+            remoteEventDatabase.getEvent(uid, emptyEventId)
                 .test {
                     awaitItem() shouldBeEqualTo Result.Error(DataError.RemoteDatabase.EVENT_NOT_FOUND)
                     awaitComplete()
@@ -82,6 +84,7 @@ class FirestoreRemoteEventDatabaseTest {
     @Test
     fun `GIVEN valid eventId WHEN getEvent THEN returns EventResponse`() =
         runTest {
+            val uid = "testUid"
             val eventId = "event1"
             val eventName = "Event 1"
             val groupId = "group1"
@@ -146,6 +149,7 @@ class FirestoreRemoteEventDatabaseTest {
             every {
                 eventsCollection.document(eventId)
                     .collection(GROUPS_COLLECTION)
+                    .where(any())
                     .snapshots()
             } returns flowOf(groupsQuerySnapshot)
             every {
@@ -153,6 +157,7 @@ class FirestoreRemoteEventDatabaseTest {
                     .collection(GROUPS_COLLECTION)
                     .document(groupId)
                     .collection(NUCLEUS_COLLECTION)
+                    .where(any())
                     .snapshots()
             } returns flowOf(nucleusQuerySnapshot)
             every {
@@ -162,10 +167,11 @@ class FirestoreRemoteEventDatabaseTest {
                     .collection(NUCLEUS_COLLECTION)
                     .document(nucleusId)
                     .collection(MEMBERS_COLLECTION)
+                    .where(any())
                     .snapshots()
             } returns flowOf(membersQuerySnapshot)
 
-            remoteEventDatabase.getEvent(eventId)
+            remoteEventDatabase.getEvent(uid, eventId)
                 .test {
                     awaitItem() shouldBeEqualTo
                         Result.Success(
@@ -202,6 +208,7 @@ class FirestoreRemoteEventDatabaseTest {
     @Test
     fun `GIVEN exception WHEN getEvent THEN logs error and returns DataError`() =
         runTest {
+            val uid = "testUid"
             val eventId = "event123"
             val exception = FirebaseNetworkException("Simulated Error")
             every { documentReference.snapshots() } answers { flow { throw exception } }
@@ -212,7 +219,7 @@ class FirestoreRemoteEventDatabaseTest {
                 )
             } returns Unit
 
-            remoteEventDatabase.getEvent(eventId)
+            remoteEventDatabase.getEvent(uid, eventId)
                 .test {
                     awaitItem() shouldBeEqualTo Result.Error(DataError.RemoteDatabase.NO_INTERNET)
                     awaitComplete()
@@ -260,7 +267,6 @@ class FirestoreRemoteEventDatabaseTest {
     fun `GIVEN event data WHEN setEvent THEN calls addListeners`() {
         val eventDto =
             UpdateEventDto(
-                organizerId = "organizer123",
                 name = "Sample Event",
                 dateSeconds = 1672531200,
                 description = "This is a test event",

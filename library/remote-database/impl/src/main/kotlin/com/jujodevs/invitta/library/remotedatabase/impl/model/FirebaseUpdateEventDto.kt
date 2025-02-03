@@ -4,7 +4,6 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 
 data class FirebaseUpdateEventDto(
-    val organizerId: String,
     val organizerEmail: String?,
     val name: String,
     val date: Timestamp,

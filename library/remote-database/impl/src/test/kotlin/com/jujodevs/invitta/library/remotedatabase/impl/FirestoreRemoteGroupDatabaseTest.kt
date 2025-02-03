@@ -41,7 +41,9 @@ class FirestoreRemoteGroupDatabaseTest {
     @Test
     fun `GIVEN group data WHEN addGroup THEN calls addListeners`() =
         runTest {
-            val group = GroupDto(name = "Group Name")
+            val groupName = "Group Name"
+            val organizerId = "organizer123"
+            val group = GroupDto(name = groupName, organizerId = organizerId)
             val eventId = "event123"
             val groupId = "group123"
             val onResult = mockk<(Result<String, DataError>) -> Unit>()

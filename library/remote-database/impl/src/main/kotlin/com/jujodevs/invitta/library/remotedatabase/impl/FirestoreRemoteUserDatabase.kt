@@ -21,14 +21,13 @@ class FirestoreRemoteUserDatabase(
     private val logger: Logger,
 ) : RemoteUserDatabase {
     private val usersCollection = db.collection(USERS_COLLECTION)
-
     override fun getUser(uid: String): Flow<Result<UserResponse, DataError>> {
         if (uid.isEmpty()) return flowOf(Result.Error(DataError.RemoteDatabase.EMPTY_UID))
         return usersCollection.document(uid)
             .snapshots()
-            .map { qs ->
+            .map { ds ->
                 Result.Success(
-                    qs.toObject<UserResponse>()?.copy(id = qs.id) ?: UserResponse(),
+                    ds.toObject<UserResponse>()?.copy(id = ds.id) ?: UserResponse(),
                 ) as Result<UserResponse, DataError>
             }
             .catch {
@@ -58,4 +57,4 @@ class FirestoreRemoteUserDatabase(
     }
 }
 
-private const val USERS_COLLECTION = "users"
+internal const val USERS_COLLECTION = "users"

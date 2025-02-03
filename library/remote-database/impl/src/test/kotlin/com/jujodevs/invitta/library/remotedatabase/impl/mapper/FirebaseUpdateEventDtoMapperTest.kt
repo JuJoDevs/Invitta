@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test
 class FirebaseUpdateEventDtoMapperTest {
     @Test
     fun `GIVEN FirebaseEventResponse WHEN toEventResponse THEN returns mapped EventResponse`() {
-        val expectedOrganizerId = "organizer123"
         val expectedOrganizerEmail = "organizer@example.com"
         val expectedName = "Sample Event"
         val dateSeconds = 1672531200L
@@ -23,7 +22,6 @@ class FirebaseUpdateEventDtoMapperTest {
         val expectedFirebaseGeoPoint = GeoPoint(latitude, longitude)
         val firebaseEventResponse =
             UpdateEventDto(
-                organizerId = expectedOrganizerId,
                 organizerEmail = expectedOrganizerEmail,
                 name = expectedName,
                 dateSeconds = dateSeconds,
@@ -38,7 +36,6 @@ class FirebaseUpdateEventDtoMapperTest {
 
         eventResponse shouldBeEqualTo
             FirebaseUpdateEventDto(
-                organizerId = expectedOrganizerId,
                 organizerEmail = expectedOrganizerEmail,
                 name = expectedName,
                 date = expectedFirebaseTimestamp,

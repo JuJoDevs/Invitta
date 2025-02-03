@@ -2,6 +2,7 @@ package com.jujodevs.invitta.library.remotedatabase.impl
 
 import com.google.firebase.FirebaseException
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
@@ -41,8 +42,22 @@ class FirestoreRemoteEventDatabase(
 ) : RemoteEventDatabase {
     private val eventsCollection = db.collection(EVENTS_COLLECTION)
 
-    override fun getEvents(): Flow<Result<List<EventResponse>, DataError>> {
+    override fun getEvents(
+        uid: String,
+        authorizedMemberIds: List<String>,
+    ): Flow<Result<List<EventResponse>, DataError>> {
         return eventsCollection
+            .where(
+                Filter.or(
+                    getOrganizerIdFilter(uid),
+                    Filter.arrayContainsAny(AUTHORIZED_MEMBER_IDS_FIELD, authorizedMemberIds),
+                ),
+            )
+            .getEventFlow()
+    }
+
+    private fun Query.getEventFlow(): Flow<Result<List<EventResponse>, DataError>> =
+        this
             .orderBy(
                 DATE_FIELD,
                 Query.Direction.DESCENDING,
@@ -65,10 +80,12 @@ class FirestoreRemoteEventDatabase(
                 )
                 emit(Result.Error(it.toRemoteDatabaseError()))
             }
-    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getEvent(eventId: String): Flow<Result<EventResponse, DataError>> =
+    override fun getEvent(
+        uidOrMember: String,
+        eventId: String,
+    ): Flow<Result<EventResponse, DataError>> =
         flow {
             val eventDocument = eventsCollection.document(eventId)
             val eventSnapshotFlow = eventDocument.snapshots()
@@ -83,14 +100,20 @@ class FirestoreRemoteEventDatabase(
 
                     val groupsCollection = eventDocument.collection(GROUPS_COLLECTION)
                     val groupsSnapshotFlow =
-                        groupsCollection.snapshots {
-                            it.toObject<GroupResponse>()
-                                ?.copy(id = it.id)
-                        }
+                        groupsCollection
+                            .whereUidOrMember(uidOrMember)
+                            .snapshots()
+                            .map { qs ->
+                                qs.documents.mapNotNull {
+                                    it.toObject<GroupResponse>()
+                                        ?.copy(id = it.id)
+                                }
+                            }
 
                     groupsSnapshotFlow.flatMapConcat { groupsSnapshot ->
                         val groupsFlow =
                             getGroupsFlow(
+                                uidOrMember,
                                 groupsSnapshot,
                                 groupsCollection,
                             )
@@ -108,16 +131,18 @@ class FirestoreRemoteEventDatabase(
             } else {
                 Result.Success(it) as Result<EventResponse, DataError>
             }
-        }.catch {
-            logger.e(
-                it.message ?: "",
-                it,
-            )
-            emit(Result.Error(it.toRemoteDatabaseError()))
         }
+            .catch {
+                logger.e(
+                    it.message ?: "",
+                    it,
+                )
+                emit(Result.Error(it.toRemoteDatabaseError()))
+            }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun getGroupsFlow(
+        uidOrMember: String,
         groupsSnapshot: List<GroupResponse>,
         groupsCollection: CollectionReference,
     ) = groupsSnapshot.map { groupResponse ->
@@ -126,14 +151,20 @@ class FirestoreRemoteEventDatabase(
                 groupsCollection.document(id)
                     .collection(NUCLEUS_COLLECTION)
             val nucleiSnapshotFlow =
-                nucleusCollection.snapshots {
-                    it.toObject<NucleusResponse>()
-                        ?.copy(id = it.id)
-                }
+                nucleusCollection
+                    .whereUidOrMember(uidOrMember)
+                    .snapshots()
+                    .map { qs ->
+                        qs.documents.mapNotNull {
+                            it.toObject<NucleusResponse>()
+                                ?.copy(id = it.id)
+                        }
+                    }
 
             nucleiSnapshotFlow.flatMapConcat { nucleiSnapshot ->
                 val nucleiFlow =
                     getNucleiFlow(
+                        uidOrMember,
                         nucleiSnapshot,
                         nucleusCollection,
                     )
@@ -147,6 +178,7 @@ class FirestoreRemoteEventDatabase(
     }
 
     private fun getNucleiFlow(
+        uidOrMember: String,
         nucleiSnapshot: List<NucleusResponse>,
         nucleusCollection: CollectionReference,
     ) = nucleiSnapshot.map { nucleusResponse ->
@@ -156,15 +188,30 @@ class FirestoreRemoteEventDatabase(
                     .document(id)
                     .collection(MEMBERS_COLLECTION)
             val membersSnapshotFlow =
-                membersCollection.snapshots {
-                    it.toObject<MemberResponse>()
-                        ?.copy(id = it.id)
-                }
+                membersCollection
+                    .whereUidOrMember(uidOrMember)
+                    .snapshots()
+                    .map { qs ->
+                        qs.documents.mapNotNull {
+                            it.toObject<MemberResponse>()
+                                ?.copy(id = it.id)
+                        }
+                    }
             membersSnapshotFlow.mapNotNull { members ->
                 nucleusResponse.copy(members = members)
             }
         } ?: flowOf(nucleusResponse)
     }
+
+    private fun CollectionReference.whereUidOrMember(id: String): Query =
+        where(
+            Filter.or(
+                Filter.equalTo(ORGANIZER_ID_FIELD, id),
+                Filter.arrayContains(AUTHORIZED_MEMBER_IDS_FIELD, id),
+            ),
+        )
+
+    private fun getOrganizerIdFilter(uid: String) = Filter.equalTo(ORGANIZER_ID_FIELD, uid)
 
     override fun addEvent(
         eventDto: EventDto,
