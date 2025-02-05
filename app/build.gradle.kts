@@ -55,6 +55,8 @@ dependencies {
     implementation(projects.library.remoteConfig.impl)
     implementation(projects.library.remoteDatabase.api)
     implementation(projects.library.remoteDatabase.impl)
+    implementation(projects.library.userRepository.api)
+    implementation(projects.library.userRepository.impl)
 }
 
 tasks.named("preBuild")
