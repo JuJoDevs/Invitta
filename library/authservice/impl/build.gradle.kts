@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.convention.android.library)
     alias(libs.plugins.convention.android.test)
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -14,4 +15,7 @@ dependencies {
     implementation(libs.bundles.koin)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+    implementation(platform(libs.supabase.bom))
+    implementation(libs.supabase.auth)
+    implementation(libs.ktor.client.android)
 }

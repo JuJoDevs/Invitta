@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-
+    name: Invitta CI
     runs-on: ubuntu-latest
 
     steps:

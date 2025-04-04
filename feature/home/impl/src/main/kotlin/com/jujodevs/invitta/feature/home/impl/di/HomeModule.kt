@@ -14,9 +14,9 @@ import org.koin.dsl.module
 
 val homeModule =
     module {
-        single<EventRemoteDatasource> { DefaultEventRemoteDatasource(get()) }
+        single<EventRemoteDatasource> { DefaultEventRemoteDatasource() }
         single<EventRepository> { DefaultEventRepository(get()) }
-        single { GetEventsUseCase(get(), get()) }
+        single { GetEventsUseCase(get()) }
         single { HomeScreen() }
         viewModel { HomeViewModel(get(), get(named(IO_COROUTINE))) }
     }

@@ -19,7 +19,6 @@ import com.jujodevs.invitta.core.designsystem.components.InvittaCenterTopBar
 import com.jujodevs.invitta.core.presentation.stringresources.R
 import com.jujodevs.invitta.core.presentation.ui.LaunchOnStart
 import com.jujodevs.invitta.core.presentation.ui.ObserveAsEffects
-import com.jujodevs.invitta.core.presentation.ui.UiText
 import com.jujodevs.invitta.core.presentation.ui.asUiText
 import com.jujodevs.invitta.core.presentation.ui.scaffold.ScaffoldEvent
 import com.jujodevs.invitta.core.presentation.ui.scaffold.ScaffoldState
@@ -39,7 +38,10 @@ internal fun HomeRoot(
     scaffoldViewModel: ScaffoldViewModel =
         koinViewModel(viewModelStoreOwner = LocalActivity.current as ComponentActivity),
 ) {
-    setScaffold { scaffoldViewModel.onEvent(it) }
+    setScaffold(
+        onEvent = scaffoldViewModel::onEvent,
+        onFabClick = {},
+    )
 
     LaunchOnStart {
         homeViewModel.initialize()
@@ -55,7 +57,10 @@ internal fun HomeRoot(
     InternalHomeScreen(homeViewModel.state)
 }
 
-internal fun setScaffold(onEvent: (ScaffoldEvent) -> Unit) {
+internal fun setScaffold(
+    onEvent: (ScaffoldEvent) -> Unit,
+    onFabClick: () -> Unit,
+) {
     onEvent(
         ScaffoldEvent.UpdateScaffoldState(
             ScaffoldState(
@@ -64,14 +69,7 @@ internal fun setScaffold(onEvent: (ScaffoldEvent) -> Unit) {
                 },
                 floatingActionButton = {
                     FloatingActionButton(
-                        onClick = {
-                            onEvent(
-                                ScaffoldEvent.ShowSnackbar(
-                                    UiText.DynamicString("Test"),
-                                    null,
-                                ),
-                            )
-                        },
+                        onClick = onFabClick,
                     ) {
                         Icon(
                             Icons.Default.Add,

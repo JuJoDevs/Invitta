@@ -35,6 +35,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
+    implementation(libs.credentials)
 
     implementation(projects.core.activityProvider.api)
     implementation(projects.core.activityProvider.impl)
@@ -53,10 +54,7 @@ dependencies {
     implementation(projects.library.logger.impl)
     implementation(projects.library.remoteConfig.api)
     implementation(projects.library.remoteConfig.impl)
-    implementation(projects.library.remoteDatabase.api)
-    implementation(projects.library.remoteDatabase.impl)
-    implementation(projects.library.userRepository.api)
-    implementation(projects.library.userRepository.impl)
+    implementation(projects.library.supabase)
 }
 
 tasks.named("preBuild")

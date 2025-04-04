@@ -24,12 +24,16 @@ desugar = "2.1.5"
 
 koin = "4.0.3"
 
+ktor = "3.1.1"
+
 credentials = "1.5.0"
 googleid = "1.1.1"
 
 google-services = "4.4.2"
 firebase = "33.11.0"
 crashlytics = "3.0.3"
+
+supabase = "3.1.3"
 
 napier = "2.7.1"
 ktlint = "12.2.0"
@@ -76,6 +80,8 @@ koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = 
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+
 credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
 credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentials" }
 googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
@@ -86,6 +92,10 @@ firebase-auth = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 firebase-remote-config = { module = "com.google.firebase:firebase-config-ktx" }
+
+supabase-bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "supabase" }
+supabase-auth = { module = "io.github.jan-tennert.supabase:auth-kt" }
+supabase-postgrest = { module = "io.github.jan-tennert.supabase:postgrest-kt" }
 
 napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
 detetkcompose = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "detekt-compose" }
@@ -99,10 +109,12 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
 
-junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit5" }
-junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit5" }
-junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit5" }
-junit-jupiter-vintage-engine = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junit5" }
+junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit5" }
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine" }
+junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params" }
+junit-jupiter-vintage-engine = { group = "org.junit.vintage", name = "junit-vintage-engine" }
+junit-platform-launcher = {  group = "org.junit.platform", name = "junit-platform-launcher" }
 
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 
