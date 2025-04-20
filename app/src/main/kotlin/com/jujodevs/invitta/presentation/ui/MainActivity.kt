@@ -75,10 +75,6 @@ class MainActivity : ComponentActivity() {
                                 screens = screens,
                             )
                         }
-                    } else {
-                        if (viewModel.state.error == null) {
-                            viewModel.initialize()
-                        }
                     }
                 }
             }

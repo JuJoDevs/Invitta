@@ -9,10 +9,15 @@
     <string name="no_user_logged_login_error">No user is currently logged in. Please log in to continue.</string>
     <string name="linking_failed_login_error">Account linking failed. Please try again or contact support.</string>
     <string name="auth_user_collision_login_error">Account conflict detected. Please verify your credentials or contact support.</string>
+    <string name="rest_exception_login_error">Server error occurred. Please try again later.</string>
+    <string name="auth_rest_exception_login_error">Authentication server error. Please contact support.</string>
+    <string name="auth_http_request_exception_login_error">Unable to reach the server. Please check your internet connection.</string>
+    <string name="auth_http_request_timeout_exception_login_error">Request timed out. Please try again.</string>
 
     <string name="google_sign_in_failed_login_error">Google sign-in process failed. Please try again.</string>
     <string name="web_client_id_not_found_login_error">Google authentication configuration error. Please contact support.</string>
     <string name="unexpected_credential_type_login_error">Unexpected error during Google sign-in. Please try again.</string>
+    <string name="email_claim_not_found_login_error">Email claim not found. Please log in again or contact support.</string>
     <string name="no_activity_login_error">Unable to proceed with Google sign-in. Please try again later.</string>
 
     <string name="database_data_error">Database error. Please try again later.</string>

@@ -7,7 +7,7 @@ interface AuthService {
     suspend fun loginAnonymously(): Result<String, LoginError>
     suspend fun loginAndLinkWithGoogle(tokenId: String): Result<String, LoginError>
     suspend fun loginWithGoogle(tokenId: String): Result<String, LoginError>
-    fun isUserLogged(): Boolean
+    suspend fun isUserLogged(): Boolean
     fun getCurrentUserId(): String
-    fun logout()
+    suspend fun logout()
 }

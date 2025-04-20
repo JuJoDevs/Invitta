@@ -7,9 +7,14 @@
     <string name="no_user_logged_login_error">No hay ningún usuario conectado. Por favor, inicia sesión para continuar.</string>
     <string name="linking_failed_login_error">Vinculación de cuentas fallida. Por favor, inténtalo de nuevo o contacta al soporte.</string>
     <string name="auth_user_collision_login_error">Conflicto de cuentas detectado. Por favor, verifica tus credenciales o contacta al soporte.</string>
+    <string name="rest_exception_login_error">Ocurrió un error en el servidor. Por favor, inténtalo de nuevo más tarde.</string>
+    <string name="auth_rest_exception_login_error">Error en el servidor de autenticación. Por favor, contacta al soporte.</string>
+    <string name="auth_http_request_exception_login_error">No se pudo contactar con el servidor. Verifica tu conexión a internet.</string>
+    <string name="auth_http_request_timeout_exception_login_error">La solicitud expiró. Por favor, inténtalo de nuevo.</string>
     <string name="google_sign_in_failed_login_error">Proceso de inicio de sesión con Google fallido. Por favor, inténtalo de nuevo.</string>
     <string name="web_client_id_not_found_login_error">Error de configuración en la autenticación de Google. Por favor, contacta al soporte.</string>
     <string name="unexpected_credential_type_login_error">Error inesperado durante el inicio de sesión con Google. Por favor, inténtalo de nuevo.</string>
+    <string name="email_claim_not_found_login_error">No se pudo obtener el correo del usuario. Por favor, contacta al soporte.</string>
     <string name="no_activity_login_error">No se puede proceder con el inicio de sesión de Google. Por favor, inténtalo más tarde.</string>
     <string name="database_data_error">Error de base de datos. Por favor, inténtelo de nuevo más tarde.</string>
     <string name="unauthorized_data_error">Acceso denegado. Verifique sus credenciales o contacte al soporte.</string>

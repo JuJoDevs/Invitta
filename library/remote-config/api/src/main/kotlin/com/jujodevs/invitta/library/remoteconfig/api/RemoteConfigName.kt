@@ -5,4 +5,6 @@ enum class RemoteConfigName(
 ) {
     SHOW_SHARE_APP(RemoteConfigType.BOOLEAN),
     GOOGLE_WEB_CLIENT_ID(RemoteConfigType.STRING),
+    SUPABASE_URL(RemoteConfigType.STRING),
+    SUPABASE_ANON_KEY(RemoteConfigType.STRING),
 }

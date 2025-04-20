@@ -12,6 +12,7 @@ class AndroidTestConventionPlugin : Plugin<Project> {
             dependencies {
                 "testImplementation"(libs.findLibrary("junit").get())
                 "testImplementation"(libs.findLibrary("hamcrest").get())
+                "testImplementation"(platform(libs.findLibrary("junit.bom").get()))
                 "testImplementation"(libs.findLibrary("junit.jupiter.vintage.engine").get())
                 "testImplementation"(libs.findLibrary("robolectric").get())
                 "testImplementation"(libs.findLibrary("androidx.compose.ui.test.junit4").get())
